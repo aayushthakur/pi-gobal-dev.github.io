@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pi Agents — AI Agents by Paytm</title>
+  <meta name="description" content="Get more customers per dollar, earn more dollars per customer. Pi Agents run the campaigns, talk to your customers, and follow up to get you there." />
+  <meta name="theme-color" content="#00B7FF" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20width%3D%2263%22%20height%3D%2263%22%20viewBox%3D%220%200%2062.8869%2062.8869%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20aria-hidden%3D%22true%22%3E%3Cpath%20d%3D%22M6.9613%203.61282e-08C3.11668%201.61751e-08%20-1.61751e-08%203.11668%20-3.61282e-08%206.96129L-1.63184e-07%2031.4429L62.8858%2031.4429L62.8858%206.9613C62.8858%203.11668%2059.7691%203.10193e-07%2055.9245%202.9024e-07L6.9613%203.61282e-08Z%22%20fill%3D%22%2300B7FF%22/%3E%3Cpath%20d%3D%22M0%2031.444L-1.27056e-07%2055.9256C-1.47009e-07%2059.7702%203.11668%2062.8869%206.96129%2062.8869L55.9245%2062.8869C59.7691%2062.8869%2062.8858%2059.7702%2062.8858%2055.9256L62.8858%2031.444L0%2031.444Z%22%20fill%3D%22%23002972%22/%3E%3Cpath%20d%3D%22M46.8864%2021.7471C49.3091%2021.7471%2051.2731%2019.7831%2051.2731%2017.3604C51.2731%2014.9377%2049.3091%2012.9737%2046.8864%2012.9737C44.4637%2012.9737%2042.4998%2014.9377%2042.4998%2017.3604C42.4998%2019.7831%2044.4637%2021.7471%2046.8864%2021.7471Z%22%20fill%3D%22%23F5F5F5%22/%3E%3Cpath%20d%3D%22M49.1852%2024.6724C49.9192%2024.6724%2050.5141%2025.2675%2050.5143%2026.0015V32.6421H50.5084V44.5454C50.5084%2045.2796%2049.9134%2045.8745%2049.1793%2045.8745H44.5299C43.7959%2045.8744%2043.2008%2045.2795%2043.2008%2044.5454V31.3833H43.2301V26.0015C43.2303%2025.2674%2043.8261%2024.6724%2044.5602%2024.6724H49.1852Z%22%20fill%3D%22%23F5F5F5%22/%3E%3Cpath%20d%3D%22M25.9695%2017.5758C33.5399%2017.5758%2039.6782%2023.7327%2039.6785%2031.3278C39.6785%2038.923%2033.5405%2045.0807%2025.9695%2045.0807C23.6738%2045.0807%2021.5101%2044.5133%2019.6091%2043.5123V50.8453C19.6091%2051.6128%2018.986%2052.235%2018.2185%2052.235H13.6511C12.8838%2052.2348%2012.2615%2051.6127%2012.2615%2050.8453V44.2067H12.2634L12.2615%2031.3278C12.2618%2023.7329%2018.399%2017.5761%2025.9695%2017.5758ZM25.9783%2024.8033C22.3864%2024.8035%2019.4747%2027.7244%2019.4744%2031.3278C19.4744%2034.9313%2022.3862%2037.853%2025.9783%2037.8531C29.5704%2037.8531%2032.4832%2034.9314%2032.4832%2031.3278C32.4828%2027.7243%2029.5702%2024.8033%2025.9783%2024.8033Z%22%20fill%3D%22%23F5F5F5%22/%3E%3C/svg%3E" type="image/svg+xml" />
+
+  <!-- ============ Fonts: Inter ============ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- ============ Tailwind (CDN) + brand config ============ -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Palette derived strictly from the Pi logo mark:
+    // sky #00B7FF (top half), navy #002972 (bottom half), neutral #F5F5F5.
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
+          colors: {
+            sky: {
+              50: '#E6F8FF', 100: '#CCF1FF', 200: '#99E2FF', 300: '#66D4FF', 400: '#33C5FF',
+              500: '#00B7FF', 600: '#0093CC', 700: '#006E99', DEFAULT: '#00B7FF'
+            },
+            navy: {
+              50: '#E8EEF8', 100: '#C9D6EE', 200: '#94ACDC', 300: '#5E82C9', 500: '#1A4BA3',
+              600: '#0F4199', 700: '#0A3A8C', 800: '#05317F', 900: '#002972', DEFAULT: '#002972'
+            },
+            neutral: { DEFAULT: '#F5F5F5' },
+            surface: '#F8FAFC'
+          },
+          boxShadow: {
+            soft: '0 10px 30px -12px rgba(0,41,114,.18)',
+            lift: '0 22px 45px -18px rgba(0,41,114,.28)',
+            glow: '0 0 0 1px rgba(0,183,255,.25), 0 18px 45px -15px rgba(0,183,255,.45)'
+          },
+          borderRadius: { '4xl': '2rem' }
+        }
+      }
+    };
+  </script>
+
+  <!-- ============ Custom CSS: animations & effects ============ -->
+  <style>
+    html { -webkit-font-smoothing: antialiased; }
+    body { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+
+    /* Gradient text accent */
+    .text-gradient {
+      background: linear-gradient(90deg, #00B7FF 0%, #0A3A8C 55%, #00B7FF 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: gradientShift 8s ease-in-out infinite;
+    }
+    @keyframes gradientShift { 0%,100% { background-position: 0% center; } 50% { background-position: 100% center; } }
+
+    /* Hero mesh blobs */
+    .blob { position: absolute; border-radius: 9999px; filter: blur(60px); opacity: .55; will-change: transform; }
+    .blob-1 { background: #66D4FF; width: 28rem; height: 28rem; top: -8rem; left: -6rem; animation: drift1 18s ease-in-out infinite; }
+    .blob-2 { background: #C9D6EE; width: 24rem; height: 24rem; top: 4rem; right: -6rem; animation: drift2 22s ease-in-out infinite; }
+    .blob-3 { background: #CCF1FF; width: 22rem; height: 22rem; bottom: -8rem; left: 35%; animation: drift3 20s ease-in-out infinite; }
+    @keyframes drift1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(60px,40px) scale(1.1); } }
+    @keyframes drift2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-50px,60px) scale(.92); } }
+    @keyframes drift3 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(40px,-50px) scale(1.08); } }
+
+    /* Subtle dotted grid overlay */
+    .grid-dots {
+      background-image: radial-gradient(rgba(0,41,114,.12) 1px, transparent 1px);
+      background-size: 22px 22px;
+      -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+              mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+    }
+
+    /* Floating agent illustration */
+    .float { animation: float 6s ease-in-out infinite; }
+    .float-delay { animation: float 7s ease-in-out -2s infinite; }
+    .float-delay-2 { animation: float 8s ease-in-out -4s infinite; }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    .spin-slow { animation: spin 40s linear infinite; transform-origin: 50% 50%; }
+    .spin-rev { animation: spin 60s linear infinite reverse; transform-origin: 50% 50%; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .pulse-node { animation: pulseNode 2.8s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+    @keyframes pulseNode { 0%,100% { opacity: .55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.35); } }
+    .dash-flow { stroke-dasharray: 4 6; animation: dash 3s linear infinite; }
+    @keyframes dash { to { stroke-dashoffset: -40; } }
+
+    /* Typing dots in chat bubbles */
+    .typing span { display:inline-block; width:5px; height:5px; border-radius:9999px; background:#00B7FF; margin-left:2px; animation: typing 1.2s infinite; }
+    .typing span:nth-child(2){ animation-delay:.15s } .typing span:nth-child(3){ animation-delay:.3s }
+    @keyframes typing { 0%,60%,100% { opacity:.25; transform:translateY(0) } 30% { opacity:1; transform:translateY(-3px) } }
+
+    /* Shimmer primary CTA */
+    .btn-shimmer { position: relative; overflow: hidden; isolation: isolate; }
+    .btn-shimmer::after {
+      content: ''; position: absolute; inset: 0; z-index: -1;
+      background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.45) 50%, transparent 70%);
+      transform: translateX(-120%); animation: shimmer 3.2s ease-in-out infinite;
+    }
+    @keyframes shimmer { 0% { transform: translateX(-120%); } 60%,100% { transform: translateX(120%); } }
+
+    /* Card hover lift + glow */
+    .card { transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease, border-color .35s ease; }
+    .card:hover, .card:focus-within { transform: translateY(-6px); box-shadow: 0 0 0 1px rgba(0,183,255,.25), 0 22px 45px -18px rgba(0,183,255,.45); border-color: rgba(0,183,255,.35); }
+    .card .icon-wrap { transition: transform .35s ease, background-color .35s ease, color .35s ease; }
+    .card:hover .icon-wrap { transform: rotate(-6deg) scale(1.08); background-color: #00B7FF; color: #fff; }
+    .card .arrow { transition: transform .3s ease; }
+    .card:hover .arrow { transform: translateX(4px); }
+
+    /* Reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+    .reveal.is-visible { opacity: 1; transform: none; }
+    .reveal[data-delay="1"] { transition-delay: .08s; } .reveal[data-delay="2"] { transition-delay: .16s; }
+    .reveal[data-delay="3"] { transition-delay: .24s; } .reveal[data-delay="4"] { transition-delay: .32s; }
+    .reveal[data-delay="5"] { transition-delay: .40s; }
+
+    /* Navbar scrolled state */
+    #navbar.scrolled { box-shadow: 0 10px 30px -12px rgba(0,41,114,.18); background-color: rgba(255,255,255,.85); }
+
+    /* Marquee for channel pills */
+    .marquee { animation: marquee 30s linear infinite; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    /* Accessible focus ring */
+    :focus-visible { outline: 3px solid #00B7FF; outline-offset: 3px; border-radius: 10px; }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body class="bg-white text-navy-900 antialiased selection:bg-sky-100">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:bg-white focus:px-4 focus:py-2 focus:rounded-xl focus:shadow-soft">Skip to main content</a>
+
+  <!-- =====================================================================
+       (1) NAVBAR — sticky, glassmorphism, shadow on scroll, mobile menu
+       ===================================================================== -->
+  <header id="navbar" class="sticky top-0 z-50 border-b border-navy-50/70 bg-white/70 backdrop-blur-xl transition-all duration-300">
+    <nav class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-8" aria-label="Primary">
+      <a href="#hero" class="flex items-center gap-2 shrink-0" aria-label="Pi Agents home">
+        <!-- ORIGINAL PI LOGO (inline SVG, unmodified paths from pi.global) -->
+        <!-- Small mark on very small screens -->
+        <svg class="h-9 w-9 sm:hidden" role="img" viewBox="0 0 62.8869 62.8869" fill="none" xmlns="http://www.w3.org/2000/svg"><title>Pi Global Logo</title><path d="M6.9613 3.61282e-08C3.11668 1.61751e-08 -1.61751e-08 3.11668 -3.61282e-08 6.96129L-1.63184e-07 31.4429L62.8858 31.4429L62.8858 6.9613C62.8858 3.11668 59.7691 3.10193e-07 55.9245 2.9024e-07L6.9613 3.61282e-08Z" fill="#00B7FF"/><path d="M0 31.444L-1.27056e-07 55.9256C-1.47009e-07 59.7702 3.11668 62.8869 6.96129 62.8869L55.9245 62.8869C59.7691 62.8869 62.8858 59.7702 62.8858 55.9256L62.8858 31.444L0 31.444Z" fill="#002972"/><path d="M46.8864 21.7471C49.3091 21.7471 51.2731 19.7831 51.2731 17.3604C51.2731 14.9377 49.3091 12.9737 46.8864 12.9737C44.4637 12.9737 42.4998 14.9377 42.4998 17.3604C42.4998 19.7831 44.4637 21.7471 46.8864 21.7471Z" fill="#F5F5F5"/><path d="M49.1852 24.6724C49.9192 24.6724 50.5141 25.2675 50.5143 26.0015V32.6421H50.5084V44.5454C50.5084 45.2796 49.9134 45.8745 49.1793 45.8745H44.5299C43.7959 45.8744 43.2008 45.2795 43.2008 44.5454V31.3833H43.2301V26.0015C43.2303 25.2674 43.8261 24.6724 44.5602 24.6724H49.1852Z" fill="#F5F5F5"/><path d="M25.9695 17.5758C33.5399 17.5758 39.6782 23.7327 39.6785 31.3278C39.6785 38.923 33.5405 45.0807 25.9695 45.0807C23.6738 45.0807 21.5101 44.5133 19.6091 43.5123V50.8453C19.6091 51.6128 18.986 52.235 18.2185 52.235H13.6511C12.8838 52.2348 12.2615 51.6127 12.2615 50.8453V44.2067H12.2634L12.2615 31.3278C12.2618 23.7329 18.399 17.5761 25.9695 17.5758ZM25.9783 24.8033C22.3864 24.8035 19.4747 27.7244 19.4744 31.3278C19.4744 34.9313 22.3862 37.853 25.9783 37.8531C29.5704 37.8531 32.4832 34.9314 32.4832 31.3278C32.4828 27.7243 29.5702 24.8033 25.9783 24.8033Z" fill="#F5F5F5"/></svg>
+        <!-- Full "Your AI Workforce" wordmark from sm breakpoint up -->
+        <svg class="hidden sm:block h-11 w-auto lg:h-12" role="img" viewBox="0 0 182 65" fill="none" xmlns="http://www.w3.org/2000/svg"><title>Pi Global Logo</title><path d="M79.4858 37.3604V30.8706L73.7029 21.9392H77.0656L81.7776 29.8426H80.2783L84.9689 21.9392H88.0532L82.2702 30.8706V37.3604H79.4858ZM92.0327 37.5746C90.8761 37.5746 89.8551 37.3319 88.9698 36.8464C88.0988 36.3609 87.4206 35.6898 86.9351 34.833C86.4496 33.962 86.2069 32.9696 86.2069 31.8559C86.2069 30.7421 86.4496 29.764 86.9351 28.9216C87.4206 28.0791 88.0988 27.4223 88.9698 26.9511C89.8551 26.4656 90.8761 26.2228 92.0327 26.2228C93.2035 26.2228 94.2245 26.4656 95.0955 26.9511C95.9665 27.4223 96.6448 28.0791 97.1302 28.9216C97.6157 29.764 97.8585 30.7421 97.8585 31.8559C97.8585 32.9696 97.6086 33.962 97.1088 34.833C96.6233 35.6898 95.9451 36.3609 95.0741 36.8464C94.2031 37.3319 93.1893 37.5746 92.0327 37.5746ZM92.0327 35.4113C92.6038 35.4113 93.1179 35.2685 93.5748 34.983C94.0317 34.6831 94.3887 34.269 94.6457 33.7407C94.9027 33.1981 95.0312 32.5627 95.0312 31.8345C95.0312 30.7635 94.7457 29.9211 94.1745 29.3071C93.6176 28.6931 92.9037 28.3861 92.0327 28.3861C91.1617 28.3861 90.4406 28.6931 89.8694 29.3071C89.2983 29.9211 89.0127 30.7635 89.0127 31.8345C89.0127 32.5627 89.1412 33.1981 89.3982 33.7407C89.6695 34.269 90.0265 34.6831 90.4691 34.983C90.9261 35.2685 91.4472 35.4113 92.0327 35.4113ZM102.949 37.5746C102.192 37.5746 101.536 37.4175 100.979 37.1034C100.436 36.775 100.015 36.3323 99.715 35.7755C99.4294 35.2186 99.2866 34.5903 99.2866 33.8906V26.437H101.985V33.3338C101.985 34.0049 102.15 34.5118 102.478 34.8545C102.821 35.1972 103.299 35.3685 103.913 35.3685C104.47 35.3685 104.955 35.24 105.369 34.983C105.798 34.7259 106.133 34.369 106.376 33.912C106.633 33.4408 106.762 32.9125 106.762 32.3271L107.04 34.9401C106.683 35.7398 106.148 36.3823 105.434 36.8678C104.734 37.339 103.906 37.5746 102.949 37.5746ZM106.847 37.3604V34.7902H106.762V26.437H109.482V37.3604H106.847ZM111.913 37.3604V26.437H114.548V29.0715H114.612V37.3604H111.913ZM114.612 31.6631L114.333 29.0715C114.59 28.1434 115.026 27.4366 115.64 26.9511C116.254 26.4656 116.989 26.2228 117.846 26.2228C118.146 26.2228 118.36 26.2514 118.489 26.3085V28.8573C118.417 28.8287 118.317 28.8145 118.189 28.8145C118.06 28.8002 117.903 28.7931 117.718 28.7931C116.675 28.7931 115.897 29.0215 115.383 29.4784C114.869 29.9354 114.612 30.6636 114.612 31.6631ZM122.708 37.3604L128.384 21.9392H130.783L125.45 37.3604H122.708ZM134.338 37.3604L129.027 21.9392H131.554L137.208 37.3604H134.338ZM125.642 31.299H134.081V33.5265H125.642V31.299ZM138.716 37.3604V21.9392H141.501V37.3604H138.716ZM78.6505 60.3604L74.2169 44.9392H77.0441L80.8138 59.0967H79.9999L83.4911 44.9392H86.7038L90.1522 59.0967H89.3597L93.1294 44.9392H95.8281L91.3945 60.3604H88.2245L84.7119 46.5241H85.3759L81.8204 60.3604H78.6505ZM101.32 60.5746C100.163 60.5746 99.142 60.3319 98.2567 59.8464C97.3857 59.3609 96.7075 58.6898 96.222 57.833C95.7365 56.962 95.4937 55.9696 95.4937 54.8559C95.4937 53.7421 95.7365 52.764 96.222 51.9216C96.7075 51.0791 97.3857 50.4223 98.2567 49.9511C99.142 49.4656 100.163 49.2228 101.32 49.2228C102.49 49.2228 103.511 49.4656 104.382 49.9511C105.253 50.4223 105.932 51.0791 106.417 51.9216C106.903 52.764 107.145 53.7421 107.145 54.8559C107.145 55.9696 106.895 56.962 106.396 57.833C105.91 58.6898 105.232 59.3609 104.361 59.8464C103.49 60.3319 102.476 60.5746 101.32 60.5746ZM101.32 58.4113C101.891 58.4113 102.405 58.2685 102.862 57.983C103.319 57.6831 103.676 57.269 103.933 56.7407C104.19 56.1981 104.318 55.5627 104.318 54.8345C104.318 53.7635 104.033 52.9211 103.461 52.3071C102.905 51.6931 102.191 51.3861 101.32 51.3861C100.449 51.3861 99.7275 51.6931 99.1563 52.3071C98.5851 52.9211 98.2996 53.7635 98.2996 54.8345C98.2996 55.5627 98.4281 56.1981 98.6851 56.7407C98.9564 57.269 99.3134 57.6831 99.756 57.983C100.213 58.2685 100.734 58.4113 101.32 58.4113ZM108.702 60.3604V49.437H111.337V52.0715H111.401V60.3604H108.702ZM111.401 54.6631L111.122 52.0715C111.379 51.1434 111.815 50.4366 112.429 49.9511C113.043 49.4656 113.778 49.2228 114.635 49.2228C114.935 49.2228 115.149 49.2514 115.277 49.3085V51.8573C115.206 51.8287 115.106 51.8145 114.978 51.8145C114.849 51.8002 114.692 51.7931 114.506 51.7931C113.464 51.7931 112.686 52.0215 112.172 52.4784C111.658 52.9354 111.401 53.6636 111.401 54.6631ZM116.619 60.3604V44.7892H119.318V60.3604H116.619ZM123.666 60.3604L118.697 54.6845L123.516 49.437H126.772L121.203 55.1772L121.353 54.1705L126.986 60.3604H123.666ZM129.075 60.3604V48.4304C129.075 47.2309 129.403 46.3171 130.06 45.6888C130.731 45.0463 131.731 44.725 133.058 44.725C133.358 44.725 133.608 44.7393 133.808 44.7678C134.008 44.7964 134.201 44.8392 134.386 44.8963V46.9953C134.286 46.9525 134.158 46.9239 134.001 46.9097C133.844 46.8811 133.665 46.8668 133.465 46.8668C132.894 46.8668 132.466 47.0096 132.18 47.2952C131.909 47.5665 131.773 47.9663 131.773 48.4946V60.3604H129.075ZM127.104 51.5574V49.437H134.151V51.5574H127.104ZM140.184 60.5746C139.027 60.5746 138.006 60.3319 137.121 59.8464C136.25 59.3609 135.572 58.6898 135.086 57.833C134.601 56.962 134.358 55.9696 134.358 54.8559C134.358 53.7421 134.601 52.764 135.086 51.9216C135.572 51.0791 136.25 50.4223 137.121 49.9511C138.006 49.4656 139.027 49.2228 140.184 49.2228C141.355 49.2228 142.376 49.4656 143.247 49.9511C144.118 50.4223 144.796 51.0791 145.281 51.9216C145.767 52.764 146.01 53.7421 146.01 54.8559C146.01 55.9696 145.76 56.962 145.26 57.833C144.775 58.6898 144.096 59.3609 143.225 59.8464C142.354 60.3319 141.341 60.5746 140.184 60.5746ZM140.184 58.4113C140.755 58.4113 141.269 58.2685 141.726 57.983C142.183 57.6831 142.54 57.269 142.797 56.7407C143.054 56.1981 143.182 55.5627 143.182 54.8345C143.182 53.7635 142.897 52.9211 142.326 52.3071C141.769 51.6931 141.055 51.3861 140.184 51.3861C139.313 51.3861 138.592 51.6931 138.021 52.3071C137.449 52.9211 137.164 53.7635 137.164 54.8345C137.164 55.5627 137.292 56.1981 137.549 56.7407C137.821 57.269 138.178 57.6831 138.62 57.983C139.077 58.2685 139.598 58.4113 140.184 58.4113ZM147.566 60.3604V49.437H150.201V52.0715H150.265V60.3604H147.566ZM150.265 54.6631L149.987 52.0715C150.244 51.1434 150.679 50.4366 151.293 49.9511C151.907 49.4656 152.643 49.2228 153.499 49.2228C153.799 49.2228 154.013 49.2514 154.142 49.3085V51.8573C154.07 51.8287 153.97 51.8145 153.842 51.8145C153.713 51.8002 153.556 51.7931 153.371 51.7931C152.328 51.7931 151.55 52.0215 151.036 52.4784C150.522 52.9354 150.265 53.6636 150.265 54.6631ZM159.987 60.5746C158.888 60.5746 157.917 60.3319 157.074 59.8464C156.246 59.3609 155.589 58.6898 155.104 57.833C154.632 56.962 154.397 55.9768 154.397 54.8773C154.397 53.7778 154.632 52.8069 155.104 51.9644C155.589 51.1077 156.246 50.4366 157.074 49.9511C157.917 49.4656 158.888 49.2228 159.987 49.2228C160.887 49.2228 161.701 49.3942 162.429 49.7369C163.157 50.0653 163.757 50.5365 164.228 51.1505C164.699 51.7502 164.999 52.4499 165.127 53.2495H162.536C162.379 52.6641 162.079 52.2071 161.636 51.8787C161.194 51.5503 160.658 51.3861 160.03 51.3861C159.444 51.3861 158.938 51.5289 158.509 51.8145C158.095 52.1 157.774 52.507 157.545 53.0353C157.317 53.5636 157.203 54.1776 157.203 54.8773C157.203 55.5912 157.317 56.2124 157.545 56.7407C157.774 57.269 158.102 57.6831 158.531 57.983C158.959 58.2685 159.459 58.4113 160.03 58.4113C160.658 58.4113 161.194 58.2471 161.636 57.9187C162.079 57.5903 162.379 57.1334 162.536 56.5479H165.127C164.999 57.3476 164.692 58.0544 164.206 58.6684C163.735 59.2681 163.136 59.7393 162.407 60.082C161.693 60.4104 160.887 60.5746 159.987 60.5746ZM171.485 60.5746C170.328 60.5746 169.315 60.3319 168.444 59.8464C167.587 59.3609 166.916 58.6898 166.43 57.833C165.959 56.9763 165.724 55.9911 165.724 54.8773C165.724 53.7635 165.959 52.7854 166.43 51.943C166.916 51.0862 167.587 50.4223 168.444 49.9511C169.3 49.4656 170.3 49.2228 171.442 49.2228C172.527 49.2228 173.47 49.4513 174.269 49.9082C175.069 50.3509 175.69 50.9792 176.133 51.7931C176.575 52.607 176.797 53.5565 176.797 54.6417C176.797 54.8416 176.79 55.0272 176.775 55.1986C176.761 55.3699 176.74 55.5413 176.711 55.7126H167.394V53.8278H174.634L174.077 54.3418C174.077 53.3138 173.841 52.5427 173.37 52.0287C172.899 51.5146 172.242 51.2576 171.399 51.2576C170.486 51.2576 169.757 51.5717 169.215 52.2C168.686 52.8283 168.422 53.735 168.422 54.9201C168.422 56.091 168.686 56.9906 169.215 57.6189C169.757 58.2329 170.521 58.5398 171.506 58.5398C172.078 58.5398 172.577 58.4328 173.006 58.2186C173.434 58.0044 173.748 57.676 173.948 57.2333H176.497C176.14 58.2614 175.533 59.0753 174.676 59.675C173.834 60.2747 172.77 60.5746 171.485 60.5746Z" fill="#000000"></path><path d="M6.9613 3.61282e-08C3.11668 1.61751e-08 -1.61751e-08 3.11668 -3.61282e-08 6.96129L-1.63184e-07 31.4429L62.8858 31.4429L62.8858 6.9613C62.8858 3.11668 59.7691 3.10193e-07 55.9245 2.9024e-07L6.9613 3.61282e-08Z" fill="#00B7FF"></path><path d="M0 31.444L-1.27056e-07 55.9256C-1.47009e-07 59.7702 3.11668 62.8869 6.96129 62.8869L55.9245 62.8869C59.7691 62.8869 62.8858 59.7702 62.8858 55.9256L62.8858 31.444L0 31.444Z" fill="#002972"></path><path d="M46.8864 21.7471C49.3091 21.7471 51.2731 19.7831 51.2731 17.3604C51.2731 14.9377 49.3091 12.9737 46.8864 12.9737C44.4637 12.9737 42.4998 14.9377 42.4998 17.3604C42.4998 19.7831 44.4637 21.7471 46.8864 21.7471Z" fill="#F5F5F5"></path><path d="M49.1852 24.6724C49.9192 24.6724 50.5141 25.2675 50.5143 26.0015V32.6421H50.5084V44.5454C50.5084 45.2796 49.9134 45.8745 49.1793 45.8745H44.5299C43.7959 45.8744 43.2008 45.2795 43.2008 44.5454V31.3833H43.2301V26.0015C43.2303 25.2674 43.8261 24.6724 44.5602 24.6724H49.1852Z" fill="#F5F5F5"></path><path d="M25.9695 17.5758C33.5399 17.5758 39.6782 23.7327 39.6785 31.3278C39.6785 38.923 33.5405 45.0807 25.9695 45.0807C23.6738 45.0807 21.5101 44.5133 19.6091 43.5123V50.8453C19.6091 51.6128 18.986 52.235 18.2185 52.235H13.6511C12.8838 52.2348 12.2615 51.6127 12.2615 50.8453V44.2067H12.2634L12.2615 31.3278C12.2618 23.7329 18.399 17.5761 25.9695 17.5758ZM25.9783 24.8033C22.3864 24.8035 19.4747 27.7244 19.4744 31.3278C19.4744 34.9313 22.3862 37.853 25.9783 37.8531C29.5704 37.8531 32.4832 34.9314 32.4832 31.3278C32.4828 27.7243 29.5702 24.8033 25.9783 24.8033Z" fill="#F5F5F5"></path></svg>
+      </a>
+
+      <!-- Desktop links -->
+      <ul class="hidden items-center gap-1 lg:flex">
+        <li><a href="#agents" class="rounded-xl px-3 py-2 text-sm font-medium text-navy-800/80 hover:bg-sky-50 hover:text-navy-900">AI Agents</a></li>
+        <li><a href="#industries" class="rounded-xl px-3 py-2 text-sm font-medium text-navy-800/80 hover:bg-sky-50 hover:text-navy-900">Industries</a></li>
+        <li><a href="#who-is-it-for" class="rounded-xl px-3 py-2 text-sm font-medium text-navy-800/80 hover:bg-sky-50 hover:text-navy-900">Who is it for?</a></li>
+        <li><a href="#why-paytm" class="rounded-xl px-3 py-2 text-sm font-medium text-navy-800/80 hover:bg-sky-50 hover:text-navy-900">Why Paytm</a></li>
+        <li><a href="#case-studies" class="rounded-xl px-3 py-2 text-sm font-medium text-navy-800/80 hover:bg-sky-50 hover:text-navy-900">Case Studies</a></li>
+        <li><a href="https://pi.global/pi-inference" class="rounded-xl px-3 py-2 text-sm font-medium text-navy-800/80 hover:bg-sky-50 hover:text-navy-900">Pi Inference</a></li>
+      </ul>
+
+      <div class="hidden items-center gap-3 lg:flex">
+        <!-- TODO: point Login to the real product login URL -->
+        <a href="#" class="rounded-xl px-4 py-2 text-sm font-semibold text-navy-900 hover:bg-sky-50">Login</a>
+        <a href="#contact" class="btn-shimmer rounded-xl bg-navy-900 px-5 py-2.5 text-sm font-semibold text-white shadow-soft transition hover:bg-navy-700">Get Started</a>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button id="menu-btn" type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-xl text-navy-900 hover:bg-sky-50 lg:hidden"
+              aria-controls="mobile-menu" aria-expanded="false" aria-label="Open menu">
+        <svg id="icon-open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg id="icon-close" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </nav>
+
+    <!-- Mobile menu panel -->
+    <div id="mobile-menu" class="hidden border-t border-navy-50 bg-white/95 backdrop-blur-xl lg:hidden">
+      <ul class="space-y-1 px-4 py-4">
+        <li><a href="#agents" class="block rounded-xl px-3 py-3 font-medium hover:bg-sky-50">AI Agents</a></li>
+        <li><a href="#industries" class="block rounded-xl px-3 py-3 font-medium hover:bg-sky-50">Industries</a></li>
+        <li><a href="#who-is-it-for" class="block rounded-xl px-3 py-3 font-medium hover:bg-sky-50">Who is it for?</a></li>
+        <li><a href="#why-paytm" class="block rounded-xl px-3 py-3 font-medium hover:bg-sky-50">Why Paytm</a></li>
+        <li><a href="#case-studies" class="block rounded-xl px-3 py-3 font-medium hover:bg-sky-50">Case Studies</a></li>
+        <li><a href="https://pi.global/pi-inference" class="block rounded-xl px-3 py-3 font-medium hover:bg-sky-50">Pi Inference</a></li>
+        <li class="grid grid-cols-2 gap-3 pt-3">
+          <a href="#" class="rounded-xl border border-navy-100 px-4 py-3 text-center font-semibold">Login</a>
+          <a href="#contact" class="rounded-xl bg-navy-900 px-4 py-3 text-center font-semibold text-white">Get Started</a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- =====================================================================
+         (2) HERO — headline, CTAs, animated mesh + floating agent network
+         ===================================================================== -->
+    <section id="hero" class="relative overflow-hidden bg-gradient-to-b from-sky-50/70 via-white to-white">
+      <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+        <div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div>
+        <div class="grid-dots absolute inset-0"></div>
+      </div>
+
+      <div class="relative mx-auto grid max-w-7xl items-center gap-12 px-4 pb-16 pt-12 sm:px-6 sm:pt-16 lg:grid-cols-2 lg:gap-8 lg:px-8 lg:pb-24 lg:pt-20">
+        <!-- Copy -->
+        <div class="reveal text-center lg:text-left">
+          <span class="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white/80 px-3 py-1.5 text-xs font-semibold text-navy-800 shadow-soft">
+            <span class="relative flex h-2 w-2"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span><span class="relative inline-flex h-2 w-2 rounded-full bg-sky-500"></span></span>
+            Pi Agents — AI Agents by Paytm
+          </span>
+          <h1 class="mt-6 text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
+            Business Growth,<br class="hidden sm:block" />
+            <span class="text-gradient">without hiring an Agency</span>
+          </h1>
+          <p class="mx-auto mt-5 max-w-xl text-base leading-relaxed text-navy-800/75 sm:text-lg lg:mx-0">
+            You name the goal. Pi Agents run the campaigns, talk to your customers, and follow up to get you there.
+          </p>
+          <p class="mx-auto mt-3 max-w-xl text-sm font-semibold text-sky-600 lg:mx-0">Get more customers per dollar, earn more dollars per customer.</p>
+          <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
+            <a href="#contact" class="btn-shimmer inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-navy-900 px-7 py-4 text-base font-semibold text-white shadow-lift transition hover:-translate-y-0.5 hover:bg-navy-700 sm:w-auto">
+              Contact Sales
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.3 3.3a1 1 0 011.4 0l6 6a1 1 0 010 1.4l-6 6a1 1 0 01-1.4-1.4L14.6 11H3a1 1 0 110-2h11.6l-4.3-4.3a1 1 0 010-1.4z" clip-rule="evenodd"/></svg>
+            </a>
+            <a href="#agents" class="inline-flex w-full items-center justify-center rounded-2xl border border-sky-200 bg-white px-7 py-4 text-base font-semibold text-navy-900 shadow-soft transition hover:-translate-y-0.5 hover:border-sky-400 sm:w-auto">
+              Meet the AI Agents
+            </a>
+          </div>
+        </div>
+
+        <!-- Animated AI agent illustration (pure SVG/CSS — NOT a logo) -->
+        <div class="reveal relative mx-auto aspect-square w-full max-w-[30rem]" data-delay="2" aria-hidden="true">
+          <svg viewBox="0 0 400 400" class="absolute inset-0 h-full w-full">
+            <defs>
+              <radialGradient id="core" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#00B7FF" stop-opacity=".9"/>
+                <stop offset="60%" stop-color="#0A3A8C" stop-opacity=".9"/>
+                <stop offset="100%" stop-color="#002972"/>
+              </radialGradient>
+              <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#00B7FF" stop-opacity=".35"/>
+                <stop offset="100%" stop-color="#00B7FF" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="200" cy="200" r="190" fill="url(#halo)"/>
+            <g class="spin-slow">
+              <circle cx="200" cy="200" r="150" fill="none" stroke="#99E2FF" stroke-width="1.2" class="dash-flow"/>
+              <circle cx="350" cy="200" r="6" fill="#00B7FF" class="pulse-node"/>
+              <circle cx="50" cy="200" r="5" fill="#0A3A8C" class="pulse-node" style="animation-delay:.8s"/>
+              <circle cx="200" cy="50" r="4" fill="#33C5FF" class="pulse-node" style="animation-delay:1.4s"/>
+            </g>
+            <g class="spin-rev">
+              <circle cx="200" cy="200" r="105" fill="none" stroke="#C9D6EE" stroke-width="1.2"/>
+              <circle cx="274" cy="126" r="5" fill="#0A3A8C" class="pulse-node" style="animation-delay:.4s"/>
+              <circle cx="126" cy="274" r="6" fill="#00B7FF" class="pulse-node" style="animation-delay:1.1s"/>
+              <circle cx="126" cy="126" r="4" fill="#66D4FF" class="pulse-node" style="animation-delay:2s"/>
+            </g>
+            <!-- Neural links -->
+            <g stroke="#66D4FF" stroke-width="1" opacity=".7">
+              <line x1="200" y1="200" x2="300" y2="110" class="dash-flow"/>
+              <line x1="200" y1="200" x2="95" y2="120" class="dash-flow"/>
+              <line x1="200" y1="200" x2="110" y2="300" class="dash-flow"/>
+              <line x1="200" y1="200" x2="305" y2="290" class="dash-flow"/>
+            </g>
+            <circle cx="300" cy="110" r="7" fill="#fff" stroke="#00B7FF" stroke-width="2"/>
+            <circle cx="95" cy="120" r="7" fill="#fff" stroke="#0A3A8C" stroke-width="2"/>
+            <circle cx="110" cy="300" r="7" fill="#fff" stroke="#00B7FF" stroke-width="2"/>
+            <circle cx="305" cy="290" r="7" fill="#fff" stroke="#0A3A8C" stroke-width="2"/>
+            <!-- Agent core -->
+            <g class="float">
+              <circle cx="200" cy="200" r="54" fill="url(#core)"/>
+              <circle cx="200" cy="200" r="54" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2"/>
+              <rect x="176" y="186" width="48" height="30" rx="12" fill="#fff" fill-opacity=".15" stroke="#fff" stroke-opacity=".7"/>
+              <circle cx="190" cy="201" r="4" fill="#fff"/><circle cx="210" cy="201" r="4" fill="#fff"/>
+              <line x1="200" y1="186" x2="200" y2="174" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="200" cy="171" r="3.5" fill="#99E2FF"/>
+            </g>
+          </svg>
+
+          <!-- Floating agent task bubbles -->
+          <div class="float absolute left-0 top-[8%] flex items-center gap-2 rounded-2xl border border-sky-100 bg-white/90 px-3 py-2 text-xs font-medium shadow-soft backdrop-blur sm:text-sm">
+            <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-sky-50 text-sky-600">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/></svg>
+            </span>
+            Sending WhatsApp campaign<span class="typing"><span></span><span></span><span></span></span>
+          </div>
+          <div class="float-delay absolute right-0 top-[40%] flex items-center gap-2 rounded-2xl border border-sky-100 bg-white/90 px-3 py-2 text-xs font-medium shadow-soft backdrop-blur sm:text-sm">
+            <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-navy-50 text-navy-700">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2"/></svg>
+            </span>
+            Voice AI: booking appointment
+          </div>
+          <div class="float-delay-2 absolute bottom-[6%] left-[6%] flex items-center gap-2 rounded-2xl border border-sky-100 bg-white/90 px-3 py-2 text-xs font-medium shadow-soft backdrop-blur sm:text-sm">
+            <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-sky-50 text-sky-600">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5L20 7"/></svg>
+            </span>
+            Lead qualified · KYC complete
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         (3) TRUST STRIP — channels where Pi Agents run (text pills only)
+         ===================================================================== -->
+    <section aria-label="Channels" class="border-y border-navy-50 bg-surface py-6">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <p class="mb-4 text-center text-xs font-semibold uppercase tracking-[0.18em] text-navy-800/60">One agent workforce, on every channel your customers use</p>
+        <div class="relative overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_10%,#000_90%,transparent)]">
+          <ul class="marquee flex w-max gap-3" id="channel-track">
+            <!-- Populated twice by JS for a seamless loop -->
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         (4) OUTCOMES / CAPABILITIES — 6 Paytm-style cards
+         ===================================================================== -->
+    <section id="growth" class="bg-white py-20 lg:py-28">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="reveal mx-auto max-w-2xl text-center">
+          <span class="text-sm font-semibold uppercase tracking-widest text-sky-600">Capabilities</span>
+          <h2 class="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">Pick a goal. <span class="text-gradient">Pi Agents deliver it.</span></h2>
+          <p class="mt-4 text-navy-800/70">From the first lead to the repeat purchase, autonomous agents work every customer, end to end.</p>
+        </div>
+
+        <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <!-- Card 1 -->
+          <article class="card reveal group rounded-3xl border border-navy-50 bg-white p-7 shadow-soft" data-delay="1">
+            <div class="icon-wrap flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-50 text-sky-600">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12a9 9 0 0115.5-6.3M21 3v5h-5M21 12a9 9 0 01-15.5 6.3M3 21v-5h5"/></svg>
+            </div>
+            <h3 class="mt-5 text-lg font-bold">Recover lost leads</h3>
+            <p class="mt-2 text-sm leading-relaxed text-navy-800/70">Re-engage abandoned leads through AI-powered conversations.</p>
+            <span class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-sky-600">Learn more <span class="arrow" aria-hidden="true">→</span></span>
+          </article>
+          <!-- Card 2 -->
+          <article class="card reveal group rounded-3xl border border-navy-50 bg-white p-7 shadow-soft" data-delay="2">
+            <div class="icon-wrap flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-50 text-sky-600">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/><path d="M9 11h.01M12 11h.01M15 11h.01" stroke-linecap="round" stroke-width="3"/></svg>
+            </div>
+            <h3 class="mt-5 text-lg font-bold">Never miss a query</h3>
+            <p class="mt-2 text-sm leading-relaxed text-navy-800/70">Answers questions, resolves complaints, and books appointments instantly.</p>
+            <span class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-sky-600">Learn more <span class="arrow" aria-hidden="true">→</span></span>
+          </article>
+          <!-- Card 3 -->
+          <article class="card reveal group rounded-3xl border border-navy-50 bg-white p-7 shadow-soft" data-delay="3">
+            <div class="icon-wrap flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-50 text-sky-600">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+            </div>
+            <h3 class="mt-5 text-lg font-bold">Complete the outcome</h3>
+            <p class="mt-2 text-sm leading-relaxed text-navy-800/70">Executes collections, KYC, onboarding, and compliance checks automatically.</p>
+            <span class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-sky-600">Learn more <span class="arrow" aria-hidden="true">→</span></span>
+          </article>
+          <!-- Card 4 -->
+          <article class="card reveal group rounded-3xl border border-navy-50 bg-white p-7 shadow-soft" data-delay="1">
+            <div class="icon-wrap flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-50 text-sky-600">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>
+            </div>
+            <h3 class="mt-5 text-lg font-bold">Sell more to existing customers</h3>
+            <p class="mt-2 text-sm leading-relaxed text-navy-800/70">Engage customers for cross-selling and upselling.</p>
+            <span class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-sky-600">Learn more <span class="arrow" aria-hidden="true">→</span></span>
+          </article>
+          <!-- Card 5 -->
+          <article class="card reveal group rounded-3xl border border-navy-50 bg-white p-7 shadow-soft" data-delay="2">
+            <div class="icon-wrap flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-50 text-sky-600">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0114 0"/><path d="M19 8v6M16 11h6"/></svg>
+            </div>
+            <h3 class="mt-5 text-lg font-bold">Get new customers</h3>
+            <p class="mt-2 text-sm leading-relaxed text-navy-800/70">Via Paytm, Meta, Google — with AI-generated creative in every language.</p>
+            <span class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-sky-600">Learn more <span class="arrow" aria-hidden="true">→</span></span>
+          </article>
+          <!-- Card 6 -->
+          <article class="card reveal group rounded-3xl border border-navy-50 bg-white p-7 shadow-soft" data-delay="3">
+            <div class="icon-wrap flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-50 text-sky-600">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            </div>
+            <h3 class="mt-5 text-lg font-bold">Grow repeat revenue</h3>
+            <p class="mt-2 text-sm leading-relaxed text-navy-800/70">Automate retention journeys to increase customer lifetime value.</p>
+            <span class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-sky-600">Learn more <span class="arrow" aria-hidden="true">→</span></span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         (5) HOW IT WORKS — 3 steps (from the site's own promise)
+         ===================================================================== -->
+    <section aria-labelledby="how-title" class="bg-surface py-20 lg:py-24">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="reveal mx-auto max-w-2xl text-center">
+          <span class="text-sm font-semibold uppercase tracking-widest text-sky-600">How it works</span>
+          <h2 id="how-title" class="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">From goal to outcome, on autopilot</h2>
+        </div>
+        <ol class="relative mt-14 grid gap-6 md:grid-cols-3">
+          <li class="pointer-events-none absolute left-[16%] right-[16%] top-10 hidden h-px list-none bg-gradient-to-r from-sky-200 via-sky-500 to-sky-200 md:block" aria-hidden="true"></li>
+          <li class="reveal relative rounded-3xl border border-navy-50 bg-white p-7 text-center shadow-soft" data-delay="1">
+            <span class="relative mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-navy-900 text-lg font-bold text-white shadow-lift">1</span>
+            <h3 class="mt-5 text-lg font-bold">You name the goal</h3>
+            <p class="mt-2 text-sm text-navy-800/70">Leads acquired, queries resolved, collections completed — choose the outcome that matters.</p>
+          </li>
+          <li class="reveal relative rounded-3xl border border-navy-50 bg-white p-7 text-center shadow-soft" data-delay="2">
+            <span class="relative mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-sky-500 text-lg font-bold text-white shadow-glow">2</span>
+            <h3 class="mt-5 text-lg font-bold">Pi Agents run the campaigns</h3>
+            <p class="mt-2 text-sm text-navy-800/70">Working customer by customer, on whichever channel the customer best responds to.</p>
+          </li>
+          <li class="reveal relative rounded-3xl border border-navy-50 bg-white p-7 text-center shadow-soft" data-delay="3">
+            <span class="relative mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-navy-700 text-lg font-bold text-white shadow-lift">3</span>
+            <h3 class="mt-5 text-lg font-bold">They follow up to get you there</h3>
+            <p class="mt-2 text-sm text-navy-800/70">Actions are completed inside your systems, with the audit trail written as it happens — and a human hand-off when required.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         AI AGENTS — "Three AI agents. One growth engine."
+         ===================================================================== -->
+    <section id="agents" class="bg-white py-20 lg:py-28">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="reveal mx-auto max-w-2xl text-center">
+          <span class="text-sm font-semibold uppercase tracking-widest text-sky-600">AI Agents</span>
+          <h2 class="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">Three AI agents. <span class="text-gradient">One growth engine.</span></h2>
+        </div>
+        <div class="mt-14 grid gap-6 lg:grid-cols-3" id="agent-cards"><!-- Rendered by JS from AGENTS data below --></div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         INDUSTRIES — accessible tabs
+         ===================================================================== -->
+    <section id="industries" class="bg-surface py-20 lg:py-28">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="reveal mx-auto max-w-2xl text-center">
+          <span class="text-sm font-semibold uppercase tracking-widest text-sky-600">Industries</span>
+          <h2 class="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">Pi Agents is built for your industry</h2>
+        </div>
+        <div class="reveal mt-10 flex justify-center">
+          <div role="tablist" aria-label="Industries" id="industry-tabs" class="inline-flex max-w-full gap-1 overflow-x-auto rounded-2xl border border-navy-50 bg-white p-1.5 shadow-soft"></div>
+        </div>
+        <div id="industry-panel" role="tabpanel" tabindex="0" class="reveal mt-8"></div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         WHO IS IT FOR
+         ===================================================================== -->
+    <section id="who-is-it-for" class="bg-white py-20 lg:py-28">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="reveal mx-auto max-w-2xl text-center">
+          <span class="text-sm font-semibold uppercase tracking-widest text-sky-600">Who is it for?</span>
+          <h2 class="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">One growth engine for <span class="text-gradient">every</span> size of business</h2>
+        </div>
+        <div class="mt-14 grid gap-6 md:grid-cols-3">
+          <article class="card reveal rounded-3xl border border-navy-50 bg-gradient-to-b from-sky-50 to-white p-8 shadow-soft" data-delay="1">
+            <p class="text-xs font-bold uppercase tracking-widest text-sky-600">Acquisition &amp; Engagement for</p>
+            <h3 class="mt-2 text-xl font-bold">Enterprise Businesses</h3>
+            <p class="mt-3 text-sm leading-relaxed text-navy-800/70">Pi Agents turn your existing CRM campaigns into intelligent conversations that drive scalable, automated, and measurable outcomes.</p>
+          </article>
+          <article class="card reveal rounded-3xl border border-navy-50 bg-gradient-to-b from-sky-50 to-white p-8 shadow-soft" data-delay="2">
+            <p class="text-xs font-bold uppercase tracking-widest text-sky-600">AI Performance Conversion for</p>
+            <h3 class="mt-2 text-xl font-bold">Digital First D2C Brands</h3>
+            <p class="mt-3 text-sm leading-relaxed text-navy-800/70">Pi Agents recover leads, personalise outreach, and improve funnel conversion across paid and direct channels — measured against actual revenue, not vanity clicks.</p>
+          </article>
+          <article class="card reveal rounded-3xl border border-navy-50 bg-gradient-to-b from-sky-50 to-white p-8 shadow-soft" data-delay="3">
+            <p class="text-xs font-bold uppercase tracking-widest text-sky-600">AI Growth Team for</p>
+            <h3 class="mt-2 text-xl font-bold">SMEs &amp; Local Businesses</h3>
+            <p class="mt-3 text-sm leading-relaxed text-navy-800/70">Pi Agents handle local ads, follow-ups, and customer acquisition so you can focus on running your business without an agency.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         WHY PAYTM — real stats from pi.global
+         ===================================================================== -->
+    <section id="why-paytm" class="bg-surface py-20 lg:py-28">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="reveal mx-auto max-w-2xl text-center">
+          <span class="text-sm font-semibold uppercase tracking-widest text-sky-600">Why Paytm</span>
+          <h2 class="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">AI agents, proven at Paytm scale</h2>
+        </div>
+        <div class="mt-14 grid gap-6 lg:grid-cols-3">
+          <article class="card reveal rounded-3xl border border-navy-50 bg-white p-8 shadow-soft lg:row-span-2" data-delay="1">
+            <p class="text-xs font-bold uppercase tracking-widest text-sky-600">AI Agents</p>
+            <div class="mt-6 space-y-6">
+              <div><p class="text-4xl font-extrabold text-navy-900 sm:text-5xl"><span data-count="60000" data-format="comma">60,000</span></p><p class="mt-1 text-sm text-navy-800/70">AI calls a day</p></div>
+              <div class="h-px bg-navy-50"></div>
+              <div><p class="text-4xl font-extrabold text-gradient sm:text-5xl">1 Trillion+</p><p class="mt-1 text-sm text-navy-800/70">Tokens consumed each month</p></div>
+            </div>
+            <p class="mt-6 text-sm leading-relaxed text-navy-800/70">Paytm has successfully deployed and runs 100+ Voice AI and Chat AI Agents across its businesses, driving real outcomes.</p>
+          </article>
+          <article class="card reveal rounded-3xl border border-navy-50 bg-white p-8 shadow-soft lg:col-span-2" data-delay="2">
+            <div class="flex items-start gap-4">
+              <div class="icon-wrap flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-sky-50 text-sky-600"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01" stroke-width="3" stroke-linecap="round"/></svg></div>
+              <div>
+                <p class="text-xs font-bold uppercase tracking-widest text-sky-600">Robust</p>
+                <h3 class="mt-1 text-xl font-bold">Infrastructure — the power behind every message</h3>
+                <p class="mt-2 text-sm leading-relaxed text-navy-800/70">Powered by Meta BSP status, Google/AWS partnerships, and our own telecom network, we provide the ultimate CPaaS layer for every conversation.</p>
+              </div>
+            </div>
+          </article>
+          <article class="card reveal rounded-3xl border border-navy-50 bg-white p-8 shadow-soft lg:col-span-2" data-delay="3">
+            <div class="flex items-start gap-4">
+              <div class="icon-wrap flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-sky-50 text-sky-600"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg></div>
+              <div>
+                <p class="text-xs font-bold uppercase tracking-widest text-sky-600">Sovereign</p>
+                <h3 class="mt-1 text-xl font-bold">Sovereign AI built for India and the Middle East</h3>
+                <p class="mt-2 text-sm leading-relaxed text-navy-800/70">DPDP-compliant by design with native Hindi and Arabic support, our AI is custom-built for the regulatory and operational realities of our markets.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         CASE STUDIES — real numbers from pi.global
+         ===================================================================== -->
+    <section id="case-studies" class="bg-white py-20 lg:py-28">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="reveal mx-auto max-w-2xl text-center">
+          <span class="text-sm font-semibold uppercase tracking-widest text-sky-600">Case Studies</span>
+          <h2 class="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">Your Business, <span class="text-gradient">to the power of Pi</span></h2>
+        </div>
+        <div class="mt-14 grid gap-6 lg:grid-cols-5">
+          <article class="card reveal rounded-3xl border border-navy-50 bg-gradient-to-br from-sky-50 via-white to-navy-50/60 p-8 shadow-soft lg:col-span-3" data-delay="1">
+            <h3 class="text-xl font-bold">Pi Agents, proven at Paytm scale</h3>
+            <dl class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+              <div class="rounded-2xl bg-white p-4 shadow-soft"><dt class="sr-only">Active merchants</dt><dd class="text-2xl font-extrabold text-navy-900">15M+</dd><p class="text-xs text-navy-800/70">active merchants</p></div>
+              <div class="rounded-2xl bg-white p-4 shadow-soft"><dt class="sr-only">Higher retention</dt><dd class="text-2xl font-extrabold text-navy-900">~22%</dd><p class="text-xs text-navy-800/70">higher retention</p></div>
+              <div class="rounded-2xl bg-white p-4 shadow-soft"><dt class="sr-only">Answer rates</dt><dd class="text-2xl font-extrabold text-navy-900">100%</dd><p class="text-xs text-navy-800/70">answer rates</p></div>
+              <div class="rounded-2xl bg-white p-4 shadow-soft"><dt class="sr-only">Lower cost per call</dt><dd class="text-2xl font-extrabold text-navy-900">~50%</dd><p class="text-xs text-navy-800/70">lower cost per call</p></div>
+            </dl>
+            <p class="mt-6 text-sm leading-relaxed text-navy-800/70">Paytm runs Pi Agents across its own operations, like merchant support, Soundbox retention, and lending collections, at a scale few businesses ever reach. AI handles the volume and hands over to humans only when escalation is needed.</p>
+          </article>
+          <article class="card reveal rounded-3xl border border-navy-50 bg-white p-8 shadow-soft lg:col-span-2" data-delay="2">
+            <h3 class="text-xl font-bold">How Khimji Jewellers drove festive walk-ins with Pi Agents</h3>
+            <div class="mt-6 grid grid-cols-2 gap-4">
+              <div class="rounded-2xl bg-sky-50 p-4"><p class="text-2xl font-extrabold text-navy-900">2M+</p><p class="text-xs text-navy-800/70">impressions delivered</p></div>
+              <div class="rounded-2xl bg-sky-50 p-4"><p class="text-2xl font-extrabold text-navy-900">1,500+</p><p class="text-xs text-navy-800/70">hot leads generated</p></div>
+            </div>
+            <p class="mt-6 text-sm leading-relaxed text-navy-800/70">In a short festive window, Khimji Jewellers needed to find and engage high-value jewellery buyers, fast. Pi Agents ran a Click-to-WhatsApp campaign on Meta, targeting HNI cohorts in Odisha with high purchase intent and converting them into store visits through real-time conversations.</p>
+          </article>
+        </div>
+
+        <!-- Trusted by (names as listed on pi.global; text only, no third-party logos) -->
+        <div class="reveal mt-14 text-center">
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-navy-800/60">Trusted by leading businesses across India</p>
+          <ul class="mt-5 flex flex-wrap justify-center gap-x-8 gap-y-3 text-base font-semibold text-navy-800/50">
+            <li>Tata Sons</li><li>SpiceJet</li><li>OYO</li><li>PVR INOX</li><li>Domino's</li><li>CEAT</li><li>Biryani Blues</li><li>Khimji Jewellers</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         (6) CTA BANNER — light gradient
+         ===================================================================== -->
+    <section id="contact" class="bg-white pb-20 lg:pb-28">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="reveal relative overflow-hidden rounded-4xl border border-sky-100 bg-gradient-to-br from-sky-50 via-white to-sky-100 px-6 py-14 text-center shadow-soft sm:px-12 lg:py-20">
+          <div class="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-sky-200/60 blur-3xl" aria-hidden="true"></div>
+          <div class="pointer-events-none absolute -bottom-20 -left-10 h-64 w-64 rounded-full bg-navy-100/70 blur-3xl" aria-hidden="true"></div>
+          <div class="relative">
+            <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">Ready to power-up with <span class="text-gradient">Pi?</span></h2>
+            <p class="mx-auto mt-4 max-w-xl text-navy-800/70">Get a demo, and contact us to design a custom package for your business.</p>
+            <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <!-- TODO: wire to the real Contact Sales form/URL -->
+              <a href="#" class="btn-shimmer inline-flex w-full items-center justify-center rounded-2xl bg-navy-900 px-8 py-4 font-semibold text-white shadow-lift transition hover:-translate-y-0.5 hover:bg-navy-700 sm:w-auto">Contact Sales</a>
+              <a href="#agents" class="inline-flex w-full items-center justify-center rounded-2xl border border-sky-200 bg-white px-8 py-4 font-semibold text-navy-900 shadow-soft transition hover:-translate-y-0.5 hover:border-sky-400 sm:w-auto">Explore AI Agents</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =====================================================================
+       (7) FOOTER
+       ===================================================================== -->
+  <footer class="border-t border-navy-50 bg-surface">
+    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      <div class="grid gap-10 md:grid-cols-4">
+        <div class="md:col-span-1">
+          <!-- ORIGINAL PI LOGO — full wordmark (inline SVG, unmodified paths) -->
+          <svg class="h-12 w-auto" role="img" viewBox="0 0 182 65" fill="none" xmlns="http://www.w3.org/2000/svg"><title>Pi Global Logo</title><path d="M79.4858 37.3604V30.8706L73.7029 21.9392H77.0656L81.7776 29.8426H80.2783L84.9689 21.9392H88.0532L82.2702 30.8706V37.3604H79.4858ZM92.0327 37.5746C90.8761 37.5746 89.8551 37.3319 88.9698 36.8464C88.0988 36.3609 87.4206 35.6898 86.9351 34.833C86.4496 33.962 86.2069 32.9696 86.2069 31.8559C86.2069 30.7421 86.4496 29.764 86.9351 28.9216C87.4206 28.0791 88.0988 27.4223 88.9698 26.9511C89.8551 26.4656 90.8761 26.2228 92.0327 26.2228C93.2035 26.2228 94.2245 26.4656 95.0955 26.9511C95.9665 27.4223 96.6448 28.0791 97.1302 28.9216C97.6157 29.764 97.8585 30.7421 97.8585 31.8559C97.8585 32.9696 97.6086 33.962 97.1088 34.833C96.6233 35.6898 95.9451 36.3609 95.0741 36.8464C94.2031 37.3319 93.1893 37.5746 92.0327 37.5746ZM92.0327 35.4113C92.6038 35.4113 93.1179 35.2685 93.5748 34.983C94.0317 34.6831 94.3887 34.269 94.6457 33.7407C94.9027 33.1981 95.0312 32.5627 95.0312 31.8345C95.0312 30.7635 94.7457 29.9211 94.1745 29.3071C93.6176 28.6931 92.9037 28.3861 92.0327 28.3861C91.1617 28.3861 90.4406 28.6931 89.8694 29.3071C89.2983 29.9211 89.0127 30.7635 89.0127 31.8345C89.0127 32.5627 89.1412 33.1981 89.3982 33.7407C89.6695 34.269 90.0265 34.6831 90.4691 34.983C90.9261 35.2685 91.4472 35.4113 92.0327 35.4113ZM102.949 37.5746C102.192 37.5746 101.536 37.4175 100.979 37.1034C100.436 36.775 100.015 36.3323 99.715 35.7755C99.4294 35.2186 99.2866 34.5903 99.2866 33.8906V26.437H101.985V33.3338C101.985 34.0049 102.15 34.5118 102.478 34.8545C102.821 35.1972 103.299 35.3685 103.913 35.3685C104.47 35.3685 104.955 35.24 105.369 34.983C105.798 34.7259 106.133 34.369 106.376 33.912C106.633 33.4408 106.762 32.9125 106.762 32.3271L107.04 34.9401C106.683 35.7398 106.148 36.3823 105.434 36.8678C104.734 37.339 103.906 37.5746 102.949 37.5746ZM106.847 37.3604V34.7902H106.762V26.437H109.482V37.3604H106.847ZM111.913 37.3604V26.437H114.548V29.0715H114.612V37.3604H111.913ZM114.612 31.6631L114.333 29.0715C114.59 28.1434 115.026 27.4366 115.64 26.9511C116.254 26.4656 116.989 26.2228 117.846 26.2228C118.146 26.2228 118.36 26.2514 118.489 26.3085V28.8573C118.417 28.8287 118.317 28.8145 118.189 28.8145C118.06 28.8002 117.903 28.7931 117.718 28.7931C116.675 28.7931 115.897 29.0215 115.383 29.4784C114.869 29.9354 114.612 30.6636 114.612 31.6631ZM122.708 37.3604L128.384 21.9392H130.783L125.45 37.3604H122.708ZM134.338 37.3604L129.027 21.9392H131.554L137.208 37.3604H134.338ZM125.642 31.299H134.081V33.5265H125.642V31.299ZM138.716 37.3604V21.9392H141.501V37.3604H138.716ZM78.6505 60.3604L74.2169 44.9392H77.0441L80.8138 59.0967H79.9999L83.4911 44.9392H86.7038L90.1522 59.0967H89.3597L93.1294 44.9392H95.8281L91.3945 60.3604H88.2245L84.7119 46.5241H85.3759L81.8204 60.3604H78.6505ZM101.32 60.5746C100.163 60.5746 99.142 60.3319 98.2567 59.8464C97.3857 59.3609 96.7075 58.6898 96.222 57.833C95.7365 56.962 95.4937 55.9696 95.4937 54.8559C95.4937 53.7421 95.7365 52.764 96.222 51.9216C96.7075 51.0791 97.3857 50.4223 98.2567 49.9511C99.142 49.4656 100.163 49.2228 101.32 49.2228C102.49 49.2228 103.511 49.4656 104.382 49.9511C105.253 50.4223 105.932 51.0791 106.417 51.9216C106.903 52.764 107.145 53.7421 107.145 54.8559C107.145 55.9696 106.895 56.962 106.396 57.833C105.91 58.6898 105.232 59.3609 104.361 59.8464C103.49 60.3319 102.476 60.5746 101.32 60.5746ZM101.32 58.4113C101.891 58.4113 102.405 58.2685 102.862 57.983C103.319 57.6831 103.676 57.269 103.933 56.7407C104.19 56.1981 104.318 55.5627 104.318 54.8345C104.318 53.7635 104.033 52.9211 103.461 52.3071C102.905 51.6931 102.191 51.3861 101.32 51.3861C100.449 51.3861 99.7275 51.6931 99.1563 52.3071C98.5851 52.9211 98.2996 53.7635 98.2996 54.8345C98.2996 55.5627 98.4281 56.1981 98.6851 56.7407C98.9564 57.269 99.3134 57.6831 99.756 57.983C100.213 58.2685 100.734 58.4113 101.32 58.4113ZM108.702 60.3604V49.437H111.337V52.0715H111.401V60.3604H108.702ZM111.401 54.6631L111.122 52.0715C111.379 51.1434 111.815 50.4366 112.429 49.9511C113.043 49.4656 113.778 49.2228 114.635 49.2228C114.935 49.2228 115.149 49.2514 115.277 49.3085V51.8573C115.206 51.8287 115.106 51.8145 114.978 51.8145C114.849 51.8002 114.692 51.7931 114.506 51.7931C113.464 51.7931 112.686 52.0215 112.172 52.4784C111.658 52.9354 111.401 53.6636 111.401 54.6631ZM116.619 60.3604V44.7892H119.318V60.3604H116.619ZM123.666 60.3604L118.697 54.6845L123.516 49.437H126.772L121.203 55.1772L121.353 54.1705L126.986 60.3604H123.666ZM129.075 60.3604V48.4304C129.075 47.2309 129.403 46.3171 130.06 45.6888C130.731 45.0463 131.731 44.725 133.058 44.725C133.358 44.725 133.608 44.7393 133.808 44.7678C134.008 44.7964 134.201 44.8392 134.386 44.8963V46.9953C134.286 46.9525 134.158 46.9239 134.001 46.9097C133.844 46.8811 133.665 46.8668 133.465 46.8668C132.894 46.8668 132.466 47.0096 132.18 47.2952C131.909 47.5665 131.773 47.9663 131.773 48.4946V60.3604H129.075ZM127.104 51.5574V49.437H134.151V51.5574H127.104ZM140.184 60.5746C139.027 60.5746 138.006 60.3319 137.121 59.8464C136.25 59.3609 135.572 58.6898 135.086 57.833C134.601 56.962 134.358 55.9696 134.358 54.8559C134.358 53.7421 134.601 52.764 135.086 51.9216C135.572 51.0791 136.25 50.4223 137.121 49.9511C138.006 49.4656 139.027 49.2228 140.184 49.2228C141.355 49.2228 142.376 49.4656 143.247 49.9511C144.118 50.4223 144.796 51.0791 145.281 51.9216C145.767 52.764 146.01 53.7421 146.01 54.8559C146.01 55.9696 145.76 56.962 145.26 57.833C144.775 58.6898 144.096 59.3609 143.225 59.8464C142.354 60.3319 141.341 60.5746 140.184 60.5746ZM140.184 58.4113C140.755 58.4113 141.269 58.2685 141.726 57.983C142.183 57.6831 142.54 57.269 142.797 56.7407C143.054 56.1981 143.182 55.5627 143.182 54.8345C143.182 53.7635 142.897 52.9211 142.326 52.3071C141.769 51.6931 141.055 51.3861 140.184 51.3861C139.313 51.3861 138.592 51.6931 138.021 52.3071C137.449 52.9211 137.164 53.7635 137.164 54.8345C137.164 55.5627 137.292 56.1981 137.549 56.7407C137.821 57.269 138.178 57.6831 138.62 57.983C139.077 58.2685 139.598 58.4113 140.184 58.4113ZM147.566 60.3604V49.437H150.201V52.0715H150.265V60.3604H147.566ZM150.265 54.6631L149.987 52.0715C150.244 51.1434 150.679 50.4366 151.293 49.9511C151.907 49.4656 152.643 49.2228 153.499 49.2228C153.799 49.2228 154.013 49.2514 154.142 49.3085V51.8573C154.07 51.8287 153.97 51.8145 153.842 51.8145C153.713 51.8002 153.556 51.7931 153.371 51.7931C152.328 51.7931 151.55 52.0215 151.036 52.4784C150.522 52.9354 150.265 53.6636 150.265 54.6631ZM159.987 60.5746C158.888 60.5746 157.917 60.3319 157.074 59.8464C156.246 59.3609 155.589 58.6898 155.104 57.833C154.632 56.962 154.397 55.9768 154.397 54.8773C154.397 53.7778 154.632 52.8069 155.104 51.9644C155.589 51.1077 156.246 50.4366 157.074 49.9511C157.917 49.4656 158.888 49.2228 159.987 49.2228C160.887 49.2228 161.701 49.3942 162.429 49.7369C163.157 50.0653 163.757 50.5365 164.228 51.1505C164.699 51.7502 164.999 52.4499 165.127 53.2495H162.536C162.379 52.6641 162.079 52.2071 161.636 51.8787C161.194 51.5503 160.658 51.3861 160.03 51.3861C159.444 51.3861 158.938 51.5289 158.509 51.8145C158.095 52.1 157.774 52.507 157.545 53.0353C157.317 53.5636 157.203 54.1776 157.203 54.8773C157.203 55.5912 157.317 56.2124 157.545 56.7407C157.774 57.269 158.102 57.6831 158.531 57.983C158.959 58.2685 159.459 58.4113 160.03 58.4113C160.658 58.4113 161.194 58.2471 161.636 57.9187C162.079 57.5903 162.379 57.1334 162.536 56.5479H165.127C164.999 57.3476 164.692 58.0544 164.206 58.6684C163.735 59.2681 163.136 59.7393 162.407 60.082C161.693 60.4104 160.887 60.5746 159.987 60.5746ZM171.485 60.5746C170.328 60.5746 169.315 60.3319 168.444 59.8464C167.587 59.3609 166.916 58.6898 166.43 57.833C165.959 56.9763 165.724 55.9911 165.724 54.8773C165.724 53.7635 165.959 52.7854 166.43 51.943C166.916 51.0862 167.587 50.4223 168.444 49.9511C169.3 49.4656 170.3 49.2228 171.442 49.2228C172.527 49.2228 173.47 49.4513 174.269 49.9082C175.069 50.3509 175.69 50.9792 176.133 51.7931C176.575 52.607 176.797 53.5565 176.797 54.6417C176.797 54.8416 176.79 55.0272 176.775 55.1986C176.761 55.3699 176.74 55.5413 176.711 55.7126H167.394V53.8278H174.634L174.077 54.3418C174.077 53.3138 173.841 52.5427 173.37 52.0287C172.899 51.5146 172.242 51.2576 171.399 51.2576C170.486 51.2576 169.757 51.5717 169.215 52.2C168.686 52.8283 168.422 53.735 168.422 54.9201C168.422 56.091 168.686 56.9906 169.215 57.6189C169.757 58.2329 170.521 58.5398 171.506 58.5398C172.078 58.5398 172.577 58.4328 173.006 58.2186C173.434 58.0044 173.748 57.676 173.948 57.2333H176.497C176.14 58.2614 175.533 59.0753 174.676 59.675C173.834 60.2747 172.77 60.5746 171.485 60.5746Z" fill="#000000"></path><path d="M6.9613 3.61282e-08C3.11668 1.61751e-08 -1.61751e-08 3.11668 -3.61282e-08 6.96129L-1.63184e-07 31.4429L62.8858 31.4429L62.8858 6.9613C62.8858 3.11668 59.7691 3.10193e-07 55.9245 2.9024e-07L6.9613 3.61282e-08Z" fill="#00B7FF"></path><path d="M0 31.444L-1.27056e-07 55.9256C-1.47009e-07 59.7702 3.11668 62.8869 6.96129 62.8869L55.9245 62.8869C59.7691 62.8869 62.8858 59.7702 62.8858 55.9256L62.8858 31.444L0 31.444Z" fill="#002972"></path><path d="M46.8864 21.7471C49.3091 21.7471 51.2731 19.7831 51.2731 17.3604C51.2731 14.9377 49.3091 12.9737 46.8864 12.9737C44.4637 12.9737 42.4998 14.9377 42.4998 17.3604C42.4998 19.7831 44.4637 21.7471 46.8864 21.7471Z" fill="#F5F5F5"></path><path d="M49.1852 24.6724C49.9192 24.6724 50.5141 25.2675 50.5143 26.0015V32.6421H50.5084V44.5454C50.5084 45.2796 49.9134 45.8745 49.1793 45.8745H44.5299C43.7959 45.8744 43.2008 45.2795 43.2008 44.5454V31.3833H43.2301V26.0015C43.2303 25.2674 43.8261 24.6724 44.5602 24.6724H49.1852Z" fill="#F5F5F5"></path><path d="M25.9695 17.5758C33.5399 17.5758 39.6782 23.7327 39.6785 31.3278C39.6785 38.923 33.5405 45.0807 25.9695 45.0807C23.6738 45.0807 21.5101 44.5133 19.6091 43.5123V50.8453C19.6091 51.6128 18.986 52.235 18.2185 52.235H13.6511C12.8838 52.2348 12.2615 51.6127 12.2615 50.8453V44.2067H12.2634L12.2615 31.3278C12.2618 23.7329 18.399 17.5761 25.9695 17.5758ZM25.9783 24.8033C22.3864 24.8035 19.4747 27.7244 19.4744 31.3278C19.4744 34.9313 22.3862 37.853 25.9783 37.8531C29.5704 37.8531 32.4832 34.9314 32.4832 31.3278C32.4828 27.7243 29.5702 24.8033 25.9783 24.8033Z" fill="#F5F5F5"></path></svg>
+          <p class="mt-4 max-w-xs text-sm text-navy-800/70">Get more customers per dollar, earn more dollars per customer.</p>
+        </div>
+        <nav aria-label="Product">
+          <h3 class="text-sm font-bold">Product</h3>
+          <ul class="mt-4 space-y-3 text-sm text-navy-800/70">
+            <li><a class="hover:text-sky-600" href="#agents">AI Agents</a></li>
+            <li><a class="hover:text-sky-600" href="#industries">Industries</a></li>
+            <li><a class="hover:text-sky-600" href="#who-is-it-for">Who is it for?</a></li>
+            <li><a class="hover:text-sky-600" href="https://pi.global/pi-inference">Pi Inference</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Company">
+          <h3 class="text-sm font-bold">Company</h3>
+          <ul class="mt-4 space-y-3 text-sm text-navy-800/70">
+            <li><a class="hover:text-sky-600" href="https://paytm.com/about-us">About Us</a></li>
+            <li><a class="hover:text-sky-600" href="https://business.paytm.com/blog">Blog</a></li>
+            <li><a class="hover:text-sky-600" href="https://paytm.com/careers/">Careers</a></li>
+            <li><a class="hover:text-sky-600" href="#case-studies">Case Studies</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h3 class="text-sm font-bold">Legal</h3>
+          <ul class="mt-4 space-y-3 text-sm text-navy-800/70">
+            <li><a class="hover:text-sky-600" href="https://paytm.com/company/privacy-policy">Privacy Policy</a></li>
+            <li><a class="hover:text-sky-600" href="https://pi.global/#terms-and-conditions">Terms &amp; Conditions</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-navy-50 pt-6 text-sm text-navy-800/60 sm:flex-row">
+        <p>© 2026 Paytm · All Rights Reserved</p>
+        <ul class="flex gap-5" aria-label="Social links">
+          <li><a class="hover:text-sky-600" href="https://www.linkedin.com/company/paytm" rel="noopener" target="_blank">LinkedIn</a></li>
+          <li><a class="hover:text-sky-600" href="https://x.com/Paytm" rel="noopener" target="_blank">X</a></li>
+          <li><a class="hover:text-sky-600" href="https://www.youtube.com/@paytm" rel="noopener" target="_blank">YouTube</a></li>
+          <li><a class="hover:text-sky-600" href="https://www.facebook.com/Paytm" rel="noopener" target="_blank">Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =====================================================================
+       SCRIPTS — vanilla JS
+       ===================================================================== -->
+  <script>
+  (function () {
+    'use strict';
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ---------- Navbar: shadow on scroll ---------- */
+    const nav = document.getElementById('navbar');
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+    window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+    /* ---------- Mobile menu toggle ---------- */
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    const setMenu = (open) => {
+      menu.classList.toggle('hidden', !open);
+      btn.setAttribute('aria-expanded', String(open));
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      document.getElementById('icon-open').classList.toggle('hidden', open);
+      document.getElementById('icon-close').classList.toggle('hidden', !open);
+    };
+    btn.addEventListener('click', () => setMenu(menu.classList.contains('hidden')));
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !menu.classList.contains('hidden')) { setMenu(false); btn.focus(); } });
+    window.addEventListener('resize', () => { if (window.innerWidth >= 1024) setMenu(false); });
+
+    /* ---------- Channel pills (from "Where it runs" on pi.global) ---------- */
+    const CHANNELS = ['WhatsApp', 'SMS', 'RCS', 'Voice AI', 'Chat AI', 'Email', 'Web', 'App', 'Paytm Ads', 'Google Ads', 'Meta Ads', 'Core enterprise systems (API)'];
+    const track = document.getElementById('channel-track');
+    const pill = (c, hidden) => `<li ${hidden ? 'aria-hidden="true"' : ''} class="whitespace-nowrap rounded-full border border-sky-100 bg-white px-4 py-2 text-sm font-semibold text-navy-800 shadow-soft"><span class="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-sky-500 align-middle"></span>${c}</li>`;
+    track.innerHTML = CHANNELS.map(c => pill(c, false)).join('') + CHANNELS.map(c => pill(c, true)).join('');
+
+    /* ---------- Three AI agents (copy from pi.global) ---------- */
+    const AGENTS = [
+      { name: 'Pi Sales & Marketing Agent', tag: 'More customers per dollar, more dollars per customer.',
+        desc: 'From first contact to completed application, working customer by customer, on whichever channel the customer best responds to.',
+        flow: ['Leads Acquired', 'Customers Converted', 'Revenue Retained'],
+        does: ['Acquires leads', 'Qualifies leads', 'Converts leads into paying customers', 'Drives cross-sell, upsell, and repeat purchases', 'Wins back dormant customers', 'Runs campaigns and generates content'],
+        runs: ['WhatsApp', 'SMS', 'RCS', 'Chat AI', 'Paytm Ads', 'Email', 'Voice AI', 'Web', 'App', 'Google Ads', 'Meta Ads'] },
+      { name: 'Pi Service Agent', tag: 'Every Query, Resolved.',
+        desc: 'Resolves the issue a customer raised. Always available, fully contextual, and able to hand off to a human when required.',
+        flow: ['Query Received', 'Issue Resolved', 'Customer Retained'],
+        does: ['Answers customer questions', 'Resolves complaints', 'Offers account and order assistance', 'Processes refunds and claims', 'Books appointments', 'Escalates to a human, when required'],
+        runs: ['WhatsApp', 'SMS', 'Chat AI', 'Email', 'Voice AI', 'Web', 'App'] },
+      { name: 'Pi Operations Agent', tag: 'Outcomes, Actioned.',
+        desc: 'Undertakes the outcome action inside enterprise systems, with the audit trail written as it happens.',
+        flow: ['Action Triggered', 'System Updated', 'Compliance Assured'],
+        does: ['Undertakes collections and recovery', 'Conducts KYC and verification', 'Onboards merchants', 'Processes loans', 'Ensures adherence to compliance rules', 'Updates and reconciles records'],
+        runs: ['WhatsApp', 'SMS', 'RCS', 'Chat AI', 'Core enterprise systems (API)', 'Voice AI', 'Email'] }
+    ];
+    const check = '<svg class="mt-0.5 h-4 w-4 shrink-0 text-sky-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-8 8a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4L8 12.6l7.3-7.3a1 1 0 011.4 0z" clip-rule="evenodd"/></svg>';
+    document.getElementById('agent-cards').innerHTML = AGENTS.map((a, i) => `
+      <article class="card reveal flex flex-col rounded-3xl border border-navy-50 bg-white p-7 shadow-soft" data-delay="${i + 1}">
+        <div class="flex items-center gap-3">
+          <span class="icon-wrap flex h-11 w-11 items-center justify-center rounded-2xl bg-sky-50 text-sky-600">
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="8" width="14" height="11" rx="4"/><path d="M12 8V4M9 13h.01M15 13h.01" stroke-linecap="round" stroke-width="2.6"/></svg>
+          </span>
+          <h3 class="text-lg font-bold">${a.name}</h3>
+        </div>
+        <p class="mt-4 font-semibold text-sky-600">${a.tag}</p>
+        <p class="mt-2 text-sm leading-relaxed text-navy-800/70">${a.desc}</p>
+        <div class="mt-5 rounded-2xl bg-surface p-4">
+          <p class="text-xs font-bold uppercase tracking-widest text-navy-800/60">The outcome</p>
+          <ol class="mt-3 flex flex-wrap items-center gap-2 text-xs font-semibold">
+            ${a.flow.map((f, j) => `<li class="rounded-full bg-white px-3 py-1.5 text-navy-900 shadow-soft">${f}</li>${j < a.flow.length - 1 ? '<li aria-hidden="true" class="text-sky-500">→</li>' : ''}`).join('')}
+          </ol>
+        </div>
+        <p class="mt-5 text-xs font-bold uppercase tracking-widest text-navy-800/60">What it does</p>
+        <ul class="mt-3 space-y-2 text-sm text-navy-800/80">${a.does.map(d => `<li class="flex gap-2">${check}<span>${d}</span></li>`).join('')}</ul>
+        <p class="mt-5 text-xs font-bold uppercase tracking-widest text-navy-800/60">Where it runs</p>
+        <ul class="mt-3 flex flex-wrap gap-1.5">${a.runs.map(r => `<li class="rounded-lg bg-sky-50 px-2.5 py-1 text-xs font-medium text-navy-800">${r}</li>`).join('')}</ul>
+      </article>`).join('');
+
+    /* ---------- Industries tabs (copy from pi.global) ---------- */
+    const INDUSTRIES = [
+      { name: 'BFSI', tag: 'Acquire. Collect. Convert. Communicate.', items: [
+        ['Acquire', 'Lead generation, qualification, and onboarding (KYC/KYB), all the way to activation'],
+        ['Convert', 'Turn payments customers into pre-approved credit, borrowers into insurance, investors into larger SIPs'],
+        ['Collect', 'Multi-channel EMI reminders, promise-to-pay capture, UPI Autopay setup, failed-payment retry, support and chargeback handling'],
+        ['Communicate', 'Reactive query handling and proactive nudges, with receipts and settlement on WhatsApp']] },
+      { name: 'Retail', tag: 'Turn every walk-in into a relationship.', items: [
+        ['Acquire', 'Lookalike-led ads across Paytm, Google, and Meta, with AI-generated creative in every language'],
+        ['Retain', 'Loyalty (stamp cards, gift vouchers, cashback), occasion and calendar triggers, win-back of churned customers'],
+        ['Relate', 'WhatsApp invoices, two-way conversations, reviews and ratings'],
+        ['Grow', 'Cross-sell, upsell, replenishment, subscription, and referral-led expansion']] },
+      { name: 'Hospitality', tag: 'A first-time customer is an event. A returning customer is a business.', items: [
+        ['Order & pay', 'At the table via QR, from home via storefront, or over the phone via an AI voice agent'],
+        ['Advertise', 'Ad campaigns across platforms, with creative generation and spend optimisation'],
+        ['Market', 'Customer cohorts, cohort-based campaigns, orchestration and performance insights'],
+        ['Loyalty & redemption', 'Points, gift vouchers, and cashback, redeemed through order & pay']] },
+      { name: 'E-Commerce', tag: 'Turn every interaction into revenue.', items: [
+        ['Acquire', 'Performance ad campaigns tuned to product catalogues, with AI-generated creative variants bespoke for every platform'],
+        ['Convert', 'Cart abandonment recovery, checkout nudges on WhatsApp, and real-time upsell at the point of purchase'],
+        ['Fulfil', 'Address verification for COD orders, delivery status updates, and proactive interventions to bring down RTOs'],
+        ['Retain', 'Reorder and replenishment reminders, post-delivery reviews, and win-back campaigns for lapsed buyers']] }
+    ];
+    const tabs = document.getElementById('industry-tabs');
+    const panel = document.getElementById('industry-panel');
+    tabs.innerHTML = INDUSTRIES.map((ind, i) => `<button role="tab" id="tab-${i}" aria-controls="industry-panel" aria-selected="false" tabindex="-1" data-i="${i}" class="whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-semibold text-navy-800/70 transition hover:text-navy-900">${ind.name}</button>`).join('');
+    const tabBtns = [...tabs.querySelectorAll('[role=tab]')];
+    function selectTab(i, focus) {
+      tabBtns.forEach((b, j) => {
+        const on = i === j;
+        b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1;
+        b.classList.toggle('bg-navy-900', on); b.classList.toggle('text-white', on); b.classList.toggle('shadow-soft', on);
+        b.classList.toggle('text-navy-800/70', !on);
+      });
+      if (focus) tabBtns[i].focus();
+      const ind = INDUSTRIES[i];
+      panel.setAttribute('aria-labelledby', 'tab-' + i);
+      panel.innerHTML = `
+        <p class="text-center text-lg font-semibold text-navy-800">${ind.tag}</p>
+        <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          ${ind.items.map(([t, d], k) => `
+            <article class="card rounded-3xl border border-navy-50 bg-white p-6 shadow-soft">
+              <span class="icon-wrap flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sm font-bold text-sky-600">0${k + 1}</span>
+              <h3 class="mt-4 font-bold">${t}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-navy-800/70">${d}</p>
+            </article>`).join('')}
+        </div>`;
+    }
+    tabBtns.forEach((b, i) => b.addEventListener('click', () => selectTab(i)));
+    tabs.addEventListener('keydown', e => {
+      const cur = tabBtns.findIndex(b => b.getAttribute('aria-selected') === 'true');
+      if (e.key === 'ArrowRight') selectTab((cur + 1) % tabBtns.length, true);
+      if (e.key === 'ArrowLeft') selectTab((cur - 1 + tabBtns.length) % tabBtns.length, true);
+    });
+    selectTab(0);
+
+    /* ---------- Reveal on scroll ---------- */
+    const reveals = document.querySelectorAll('.reveal');
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      reveals.forEach(el => el.classList.add('is-visible'));
+    } else {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('is-visible'); io.unobserve(en.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      reveals.forEach(el => io.observe(el));
+    }
+
+    /* ---------- Count-up for numeric stats ---------- */
+    const counters = document.querySelectorAll('[data-count]');
+    if (!reduceMotion && 'IntersectionObserver' in window) {
+      const cio = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if (!en.isIntersecting) return;
+          const el = en.target, end = +el.dataset.count, t0 = performance.now(), dur = 1400;
+          const step = now => {
+            const p = Math.min((now - t0) / dur, 1), v = Math.round(end * (1 - Math.pow(1 - p, 3)));
+            el.textContent = v.toLocaleString('en-US');
+            if (p < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step); cio.unobserve(el);
+        });
+      }, { threshold: 0.6 });
+      counters.forEach(el => cio.observe(el));
+    }
+  })();
+  </script>
+</body>
+</html>
