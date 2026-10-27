@@ -299,9 +299,8 @@
             Voice AI use cases
           </span>
         </div>
-        <div class="min-w-0 flex-1 space-y-2">
+        <div class="min-w-0 flex-1">
           <div class="vt-row"><ul class="vt-track" id="vt-track-1"></ul></div>
-          <div class="vt-row"><ul class="vt-track vt-reverse" id="vt-track-2"></ul></div>
         </div>
       </div>
     </section>
@@ -948,10 +947,17 @@
     const vtChip = (label, i, hidden) =>
       `<li class="vt-chip"${hidden ? ' aria-hidden="true"' : ''}><span class="vt-ico${i % 2 ? ' alt' : ''}">${i % 2 ? ICON_WAVE : ICON_PHONE}</span>${label}</li>`;
     const vtFill = (el, list) => { el.innerHTML = list.map((l, i) => vtChip(l, i, false)).join('') + list.map((l, i) => vtChip(l, i, true)).join(''); };
-    const half = Math.ceil(VOICE_USE_CASES.length / 2);
-    // Row 1 starts with the first half, row 2 with the second half — so the rows never look identical.
     vtFill(document.getElementById('vt-track-1'), VOICE_USE_CASES);
-    vtFill(document.getElementById('vt-track-2'), VOICE_USE_CASES.slice(half).concat(VOICE_USE_CASES.slice(0, half)));
+    // Match the pixel speed of the channel strip below ("One agent workforce…", 30s per loop):
+    // scale this track's duration by its loop width relative to the channel track's loop width.
+    function vtSyncSpeed() {
+      const vt = document.getElementById('vt-track-1'), ch = document.getElementById('channel-track');
+      const chHalf = ch.scrollWidth / 2, vtHalf = vt.scrollWidth / 2;
+      if (chHalf > 0 && vtHalf > 0) vt.style.animationDuration = (30 * vtHalf / chHalf).toFixed(2) + 's';
+    }
+    vtSyncSpeed();
+    window.addEventListener('load', vtSyncSpeed);
+    window.addEventListener('resize', vtSyncSpeed);
 
     /* =====================================================================
        WORKFLOW AUTOMATION — node canvas + run simulation
