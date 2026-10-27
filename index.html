@@ -123,7 +123,7 @@
 
     /* Marquee for channel pills */
     .marquee { animation: marquee 30s linear infinite; }
-    @keyframes marquee { to { transform: translateX(-50%); } }
+    @keyframes marquee { from { transform: translateX(-50%); } to { transform: translateX(0); } } /* left → right */
 
     /* =====================================================================
        VOICE AI USE-CASE TICKER — two seamless marquee rows (opposite dirs)
@@ -134,9 +134,8 @@
       -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
               mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
     .vt-track { display: flex; width: max-content; animation: vtScroll 60s linear infinite; will-change: transform; }
-    .vt-track.vt-reverse { animation-direction: reverse; animation-duration: 68s; }
     .vt:hover .vt-track, .vt:focus-within .vt-track { animation-play-state: paused; } /* pause on hover */
-    @keyframes vtScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes vtScroll { from { transform: translateX(-50%); } to { transform: translateX(0); } } /* left → right */
     .vt-chip { display: inline-flex; align-items: center; gap: .5rem; margin-right: .625rem; white-space: nowrap;
       border: 1px solid #CCF1FF; background: #fff; border-radius: 9999px; padding: .375rem .9rem .375rem .375rem;
       font-size: .8125rem; font-weight: 600; color: #05317F; box-shadow: 0 6px 16px -10px rgba(0,41,114,.25);
