@@ -125,6 +125,94 @@
     .marquee { animation: marquee 30s linear infinite; }
     @keyframes marquee { to { transform: translateX(-50%); } }
 
+    /* =====================================================================
+       VOICE AI USE-CASE TICKER — two seamless marquee rows (opposite dirs)
+       Seamless loop: each track holds the list twice and slides by -50%.
+       Chips use margin-right (not flex gap) so the -50% point is exact.
+       ===================================================================== */
+    .vt-row { overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+              mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+    .vt-track { display: flex; width: max-content; animation: vtScroll 60s linear infinite; will-change: transform; }
+    .vt-track.vt-reverse { animation-direction: reverse; animation-duration: 68s; }
+    .vt:hover .vt-track, .vt:focus-within .vt-track { animation-play-state: paused; } /* pause on hover */
+    @keyframes vtScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .vt-chip { display: inline-flex; align-items: center; gap: .5rem; margin-right: .625rem; white-space: nowrap;
+      border: 1px solid #CCF1FF; background: #fff; border-radius: 9999px; padding: .375rem .9rem .375rem .375rem;
+      font-size: .8125rem; font-weight: 600; color: #05317F; box-shadow: 0 6px 16px -10px rgba(0,41,114,.25);
+      transition: border-color .25s ease, box-shadow .25s ease; }
+    .vt-chip:hover { border-color: #00B7FF; box-shadow: 0 0 0 1px rgba(0,183,255,.25), 0 10px 22px -12px rgba(0,183,255,.6); }
+    .vt-ico { display: grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 9999px; background: #E6F8FF; color: #0093CC; flex: none; }
+    .vt-ico.alt { background: #E8EEF8; color: #0A3A8C; }
+    .vt-ico svg { width: .8rem; height: .8rem; }
+
+    /* =====================================================================
+       WORKFLOW AUTOMATION — node canvas (fixed 1400×470 coordinate stage,
+       scaled with transform to fit; edges are SVG beziers in the same space)
+       ===================================================================== */
+    .wf-canvas { background-color: #F6F7F9;
+      background-image: radial-gradient(rgba(0,41,114,.16) 1px, transparent 1.3px); background-size: 18px 18px; }
+    .wf-scroller { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+    .wf-viewport { position: relative; margin: 0 auto; }
+    .wf-stage { position: absolute; left: 0; top: 0; width: 1400px; height: 470px; transform-origin: 0 0; }
+    .wf-edges { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+    .wf-edge { fill: none; stroke: #B4BDCB; stroke-width: 1.4; stroke-linecap: round; transition: stroke .35s ease, stroke-width .35s ease; }
+    .wf-edge.is-draw { transition: stroke-dashoffset 1.1s cubic-bezier(.6,.1,.2,1), stroke .35s ease; }
+    .wf-edge.is-hot { stroke: #00B7FF; stroke-width: 2.2; }
+
+    .wf-node { position: absolute; background: #fff; border: 1px solid #E3E8EF; border-radius: 14px;
+      box-shadow: 0 8px 20px -12px rgba(0,41,114,.28); opacity: 0; transform: translateY(10px);
+      transition: opacity .6s ease, transform .6s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease, border-color .35s ease; }
+    .wf-on .wf-node { opacity: 1; transform: none; }
+    .wf-node.is-active { border-color: rgba(0,183,255,.65); box-shadow: 0 0 0 4px rgba(0,183,255,.14), 0 18px 40px -16px rgba(0,183,255,.6); }
+    .wf-node.is-active::before { content: ''; position: absolute; inset: -7px; border-radius: 20px; border: 2px solid rgba(0,183,255,.5);
+      animation: wfRing 1.6s ease-out infinite; pointer-events: none; }
+    .wf-pill.is-active::before { border-radius: 9999px; }
+    .wf-node.is-done { border-color: rgba(0,183,255,.38); }
+    @keyframes wfRing { 0% { opacity: .9; transform: scale(.98); } 100% { opacity: 0; transform: scale(1.07); } }
+
+    .wf-head { display: flex; align-items: center; gap: 10px; padding: 12px 12px 11px; }
+    .wf-tile { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; flex: none; }
+    .wf-tile svg { width: 16px; height: 16px; }
+    .wf-title { font-size: 13px; font-weight: 700; color: #002972; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .wf-sub { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 9.5px; letter-spacing: -.3px; color: #6B7A90; margin-top: 3px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .wf-ports { border-top: 1px solid #EEF1F5; padding: 5px 0 7px; }
+    .wf-port { position: relative; height: 20px; line-height: 20px; text-align: right; padding-right: 14px;
+      font-size: 10.5px; font-weight: 600; color: #3B4D6B; transition: color .3s ease; }
+    .wf-dot { position: absolute; right: -4px; top: 50%; width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%;
+      background: #fff; border: 1.5px solid #94A3B8; transition: background .3s ease, border-color .3s ease; }
+    .wf-in { left: -4px; right: auto; top: 27.5px; }           /* input port: vertical centre of the header */
+    .wf-out-head { top: 27.5px; }                               /* output from header (Audience) */
+    .wf-pill .wf-dot { top: 50%; }
+    .wf-port.is-hot { color: #0093CC; }
+    .wf-port.is-hot .wf-dot, .wf-dot.is-hot { border-color: #00B7FF; background: #00B7FF; }
+
+    .wf-pill { display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px; border-radius: 9999px; font-size: 12.5px; font-weight: 700; }
+    .wf-start { background: #E8F7EE; border-color: #9ADBB2; color: #15803D; }
+    .wf-end { background: #FFF6E0; border-color: #F5C451; color: #B45309; box-shadow: 0 0 0 4px rgba(245,196,81,.18); }
+    .wf-pill svg { width: 13px; height: 13px; }
+
+    .wf-badge { position: absolute; top: -11px; right: 10px; display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px;
+      border-radius: 9999px; font-size: 10px; font-weight: 700; color: #fff; background: #002972; white-space: nowrap;
+      box-shadow: 0 6px 14px -6px rgba(0,41,114,.45); opacity: 0; transform: translateY(4px) scale(.95); transition: opacity .3s ease, transform .3s ease; }
+    .wf-pill .wf-badge { right: auto; left: 50%; top: -24px; transform: translate(-50%, 4px) scale(.95); }
+    .wf-badge.show { opacity: 1; transform: none; }
+    .wf-pill .wf-badge.show { transform: translate(-50%, 0); }
+    .wf-badge.ok { background: #16A34A; } .wf-badge.warn { background: #D97706; } .wf-badge.info { background: #0093CC; }
+    .wf-wave { display: inline-flex; align-items: center; gap: 2px; height: 10px; }
+    .wf-wave i { display: block; width: 2px; height: 100%; border-radius: 2px; background: #fff; animation: wfWave .9s ease-in-out infinite; }
+    .wf-wave i:nth-child(2) { animation-delay: .15s; } .wf-wave i:nth-child(3) { animation-delay: .3s; } .wf-wave i:nth-child(4) { animation-delay: .45s; }
+    @keyframes wfWave { 0%,100% { transform: scaleY(.3); } 50% { transform: scaleY(1); } }
+
+    .wf-log-item { animation: wfLogIn .35s ease both; }
+    @keyframes wfLogIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .vt-row { overflow-x: auto; }   /* ticker is static: let users scroll it instead */
+      .wf-node { opacity: 1; transform: none; }
+    }
+
     /* Accessible focus ring */
     :focus-visible { outline: 3px solid #00B7FF; outline-offset: 3px; border-radius: 10px; }
 
@@ -153,19 +241,20 @@
       </a>
 
       <!-- Desktop links -->
-      <ul class="hidden items-center gap-1 lg:flex">
-        <li><a href="#agents" class="rounded-xl px-3 py-2 text-sm font-medium text-navy-800/80 hover:bg-sky-50 hover:text-navy-900">AI Agents</a></li>
-        <li><a href="#industries" class="rounded-xl px-3 py-2 text-sm font-medium text-navy-800/80 hover:bg-sky-50 hover:text-navy-900">Industries</a></li>
-        <li><a href="#who-is-it-for" class="rounded-xl px-3 py-2 text-sm font-medium text-navy-800/80 hover:bg-sky-50 hover:text-navy-900">Who is it for?</a></li>
-        <li><a href="#why-paytm" class="rounded-xl px-3 py-2 text-sm font-medium text-navy-800/80 hover:bg-sky-50 hover:text-navy-900">Why Paytm</a></li>
-        <li><a href="#case-studies" class="rounded-xl px-3 py-2 text-sm font-medium text-navy-800/80 hover:bg-sky-50 hover:text-navy-900">Case Studies</a></li>
-        <li><a href="https://pi.global/pi-inference" class="rounded-xl px-3 py-2 text-sm font-medium text-navy-800/80 hover:bg-sky-50 hover:text-navy-900">Pi Inference</a></li>
+      <ul class="hidden items-center gap-0.5 lg:flex xl:gap-1">
+        <li><a href="#agents" class="whitespace-nowrap rounded-xl px-2 py-2 text-sm font-medium text-navy-800/80 xl:px-3 hover:bg-sky-50 hover:text-navy-900">AI Agents</a></li>
+        <li><a href="#workflows" class="whitespace-nowrap rounded-xl px-2 py-2 text-sm font-medium text-navy-800/80 xl:px-3 hover:bg-sky-50 hover:text-navy-900">Workflows</a></li>
+        <li><a href="#industries" class="whitespace-nowrap rounded-xl px-2 py-2 text-sm font-medium text-navy-800/80 xl:px-3 hover:bg-sky-50 hover:text-navy-900">Industries</a></li>
+        <li><a href="#who-is-it-for" class="whitespace-nowrap rounded-xl px-2 py-2 text-sm font-medium text-navy-800/80 xl:px-3 hover:bg-sky-50 hover:text-navy-900">Who is it for?</a></li>
+        <li><a href="#why-paytm" class="whitespace-nowrap rounded-xl px-2 py-2 text-sm font-medium text-navy-800/80 xl:px-3 hover:bg-sky-50 hover:text-navy-900">Why Paytm</a></li>
+        <li><a href="#case-studies" class="whitespace-nowrap rounded-xl px-2 py-2 text-sm font-medium text-navy-800/80 xl:px-3 hover:bg-sky-50 hover:text-navy-900">Case Studies</a></li>
+        <li><a href="https://pi.global/pi-inference" class="whitespace-nowrap rounded-xl px-2 py-2 text-sm font-medium text-navy-800/80 xl:px-3 hover:bg-sky-50 hover:text-navy-900">Pi Inference</a></li>
       </ul>
 
-      <div class="hidden items-center gap-3 lg:flex">
+      <div class="hidden items-center gap-2 lg:flex xl:gap-3">
         <!-- TODO: point Login to the real product login URL -->
-        <a href="#" class="rounded-xl px-4 py-2 text-sm font-semibold text-navy-900 hover:bg-sky-50">Login</a>
-        <a href="#contact" class="btn-shimmer rounded-xl bg-navy-900 px-5 py-2.5 text-sm font-semibold text-white shadow-soft transition hover:bg-navy-700">Get Started</a>
+        <a href="#" class="whitespace-nowrap rounded-xl px-3 py-2 text-sm font-semibold text-navy-900 hover:bg-sky-50 xl:px-4">Login</a>
+        <a href="#contact" class="btn-shimmer whitespace-nowrap rounded-xl bg-navy-900 px-4 py-2.5 text-sm xl:px-5 font-semibold text-white shadow-soft transition hover:bg-navy-700">Get Started</a>
       </div>
 
       <!-- Mobile hamburger -->
@@ -180,6 +269,7 @@
     <div id="mobile-menu" class="hidden border-t border-navy-50 bg-white/95 backdrop-blur-xl lg:hidden">
       <ul class="space-y-1 px-4 py-4">
         <li><a href="#agents" class="block rounded-xl px-3 py-3 font-medium hover:bg-sky-50">AI Agents</a></li>
+        <li><a href="#workflows" class="block rounded-xl px-3 py-3 font-medium hover:bg-sky-50">Workflows</a></li>
         <li><a href="#industries" class="block rounded-xl px-3 py-3 font-medium hover:bg-sky-50">Industries</a></li>
         <li><a href="#who-is-it-for" class="block rounded-xl px-3 py-3 font-medium hover:bg-sky-50">Who is it for?</a></li>
         <li><a href="#why-paytm" class="block rounded-xl px-3 py-3 font-medium hover:bg-sky-50">Why Paytm</a></li>
@@ -194,6 +284,28 @@
   </header>
 
   <main id="main-content">
+
+    <!-- =====================================================================
+         VOICE AI USE-CASE TICKER — continuously running, pauses on hover.
+         Chips are generated by JS (VOICE_USE_CASES) and duplicated for a
+         seamless loop; duplicates are aria-hidden. Generic labels only.
+         ===================================================================== -->
+    <section aria-label="Voice AI use cases" class="vt relative border-b border-navy-50 bg-gradient-to-b from-white to-sky-50/60 py-2.5">
+      <div class="flex items-center gap-3">
+        <!-- Leading label (desktop) -->
+        <div class="hidden shrink-0 pl-6 lg:block xl:pl-8">
+          <span class="inline-flex items-center gap-2 rounded-full bg-navy-900 px-3 py-1.5 text-xs font-semibold text-white shadow-soft">
+            <span class="relative flex h-2 w-2"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span><span class="relative inline-flex h-2 w-2 rounded-full bg-sky-400"></span></span>
+            Voice AI use cases
+          </span>
+        </div>
+        <div class="min-w-0 flex-1 space-y-2">
+          <div class="vt-row"><ul class="vt-track" id="vt-track-1"></ul></div>
+          <div class="vt-row"><ul class="vt-track vt-reverse" id="vt-track-2"></ul></div>
+        </div>
+      </div>
+    </section>
+
 
     <!-- =====================================================================
          (2) HERO — headline, CTAs, animated mesh + floating agent network
@@ -382,6 +494,69 @@
             <p class="mt-2 text-sm leading-relaxed text-navy-800/70">Automate retention journeys to increase customer lifetime value.</p>
             <span class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-sky-600">Learn more <span class="arrow" aria-hidden="true">→</span></span>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         WORKFLOW AUTOMATION — animated node-based flow (voice AI + CPaaS)
+         Nodes are absolutely positioned on a fixed 1400×470 "stage"; edges are
+         SVG cubic beziers in the same coordinate space, computed from the real
+         port positions, so they stay aligned at every scale. The stage is
+         scaled to fit; on narrow screens it keeps a minimum scale and scrolls.
+         ===================================================================== -->
+    <section id="workflows" aria-labelledby="wf-title" class="border-t border-navy-50 bg-gradient-to-b from-white via-sky-50/40 to-white py-20 lg:py-28">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="reveal mx-auto max-w-3xl text-center">
+          <span class="text-sm font-semibold uppercase tracking-widest text-sky-600">Workflow automation</span>
+          <h2 id="wf-title" class="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">Voice AI that <span class="text-gradient">orchestrates every channel</span></h2>
+          <p class="mt-4 text-navy-800/70">Every AI call outcome automatically triggers the next step — WhatsApp, SMS, RCS or an API action — with no manual hand-offs.</p>
+        </div>
+
+        <!-- Canvas -->
+        <div class="reveal mt-12" data-delay="1">
+          <div id="wf" class="wf-canvas relative overflow-hidden rounded-3xl border border-navy-50 shadow-soft">
+            <!-- Toolbar chips (outside the scaled stage so they stay readable) -->
+            <div class="pointer-events-none absolute left-4 top-4 z-10 flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-2 rounded-full border border-navy-50 bg-white/90 px-3 py-1.5 text-xs font-semibold text-navy-800 shadow-soft backdrop-blur">
+                <span class="relative flex h-2 w-2"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span></span>
+                Simulated run
+              </span>
+              <span id="wf-path" class="rounded-full bg-navy-900 px-3 py-1.5 text-xs font-semibold text-white shadow-soft">Success path</span>
+            </div>
+            <div id="wf-scroller" class="wf-scroller pt-14 pb-4 sm:pt-12">
+              <div id="wf-viewport" class="wf-viewport">
+                <div id="wf-stage" class="wf-stage" role="img" aria-label="Workflow diagram: Start, Audience, AI Call. On success a WhatsApp template is sent; a text reply triggers a follow-up AI Call, which on timeout or failure sends an RCS template. On a failed AI Call an SMS is sent, then an external API is called. All branches end at End.">
+                  <svg class="wf-edges" id="wf-edges" viewBox="0 0 1400 470" aria-hidden="true">
+                    <g id="wf-edge-layer"></g>
+                    <g id="wf-dot-layer"></g>
+                  </svg>
+                  <!-- Node cards are rendered by JS from WF_NODES -->
+                </div>
+              </div>
+            </div>
+            <p id="wf-hint" class="hidden pb-4 text-center text-xs font-semibold text-navy-800/60">← Swipe to explore the full flow →</p>
+          </div>
+        </div>
+
+        <!-- Live log + legend -->
+        <div class="mt-6 grid gap-6 lg:grid-cols-5">
+          <div class="reveal rounded-3xl border border-navy-50 bg-white p-6 shadow-soft lg:col-span-3" data-delay="2">
+            <div class="flex items-center justify-between gap-3">
+              <p class="text-xs font-bold uppercase tracking-widest text-navy-800/60">Run log</p>
+              <span class="rounded-full bg-sky-50 px-2.5 py-1 text-[11px] font-semibold text-sky-700">Illustrative · not live data</span>
+            </div>
+            <ol id="wf-log" class="mt-4 min-h-[13.5rem] space-y-2 font-mono text-[13px] text-navy-800" aria-live="off"></ol>
+          </div>
+          <div class="reveal rounded-3xl border border-navy-50 bg-white p-6 shadow-soft lg:col-span-2" data-delay="3">
+            <p class="text-xs font-bold uppercase tracking-widest text-navy-800/60">Channels in this flow</p>
+            <ul id="wf-legend" class="mt-4 grid grid-cols-2 gap-3 text-sm font-semibold text-navy-900"></ul>
+            <div class="mt-5 space-y-2 border-t border-navy-50 pt-4 text-sm text-navy-800/75">
+              <p class="flex items-center gap-2"><span class="inline-block h-0.5 w-6 rounded bg-sky-500"></span>Active path in the current run</p>
+              <p class="flex items-center gap-2"><span class="inline-block h-0.5 w-6 rounded bg-slate-300"></span>Other configured branches</p>
+              <p class="pt-1 text-xs text-navy-800/60">The run alternates between a success path and a fallback path. Steps and timings are examples.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -758,6 +933,320 @@
       if (e.key === 'ArrowLeft') selectTab((cur - 1 + tabBtns.length) % tabBtns.length, true);
     });
     selectTab(0);
+
+    /* =====================================================================
+       VOICE AI USE-CASE TICKER — two rows, each list rendered twice
+       ===================================================================== */
+    const VOICE_USE_CASES = [
+      'Lead qualification calls', 'Payment reminders', 'COD order confirmation', 'Abandoned cart recovery',
+      'Appointment booking', 'KYC & document follow-ups', 'Loan / EMI collections', 'Customer feedback & NPS surveys',
+      'Delivery rescheduling', 'Renewal & upsell calls', 'Event & webinar reminders', 'Inbound support triage',
+      'Multilingual outreach', 'Missed-call callbacks'
+    ];
+    const ICON_PHONE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2"/></svg>';
+    const ICON_WAVE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M3 10v4M7 7v10M11 4v16M15 8v8M19 10v4"/></svg>';
+    const vtChip = (label, i, hidden) =>
+      `<li class="vt-chip"${hidden ? ' aria-hidden="true"' : ''}><span class="vt-ico${i % 2 ? ' alt' : ''}">${i % 2 ? ICON_WAVE : ICON_PHONE}</span>${label}</li>`;
+    const vtFill = (el, list) => { el.innerHTML = list.map((l, i) => vtChip(l, i, false)).join('') + list.map((l, i) => vtChip(l, i, true)).join(''); };
+    const half = Math.ceil(VOICE_USE_CASES.length / 2);
+    // Row 1 starts with the first half, row 2 with the second half — so the rows never look identical.
+    vtFill(document.getElementById('vt-track-1'), VOICE_USE_CASES);
+    vtFill(document.getElementById('vt-track-2'), VOICE_USE_CASES.slice(half).concat(VOICE_USE_CASES.slice(0, half)));
+
+    /* =====================================================================
+       WORKFLOW AUTOMATION — node canvas + run simulation
+       ===================================================================== */
+    (function workflow() {
+      const STAGE_W = 1400, STAGE_H = 470;
+      const MIN_SCALE = 0.74;                      // phone minimum scale; below this the canvas scrolls horizontally
+      const stage = document.getElementById('wf-stage');
+      const viewport = document.getElementById('wf-viewport');
+      const scroller = document.getElementById('wf-scroller');
+      const hint = document.getElementById('wf-hint');
+      const edgeLayer = document.getElementById('wf-edge-layer');
+      const dotLayer = document.getElementById('wf-dot-layer');
+      const logEl = document.getElementById('wf-log');
+      const pathChip = document.getElementById('wf-path');
+      const SVGNS = 'http://www.w3.org/2000/svg';
+
+      // Simple stroke icons (generic glyphs — not brand logos)
+      const I = {
+        users: '<path d="M16 19v-1a4 4 0 00-4-4H7a4 4 0 00-4 4v1"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M21 19v-1a4 4 0 00-3-3.9M16 3.6a4 4 0 010 7.8"/>',
+        phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2"/>',
+        chat: '<path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/>',
+        sms: '<path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h.01M12 10h.01M16 10h.01" stroke-width="3"/>',
+        rcs: '<rect x="3" y="4" width="18" height="13" rx="3"/><path d="M7 21l3-4M7 9h10M7 12.5h6"/>',
+        api: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/>',
+        play: '<path d="M7 5l12 7-12 7z" fill="currentColor"/>',
+        stop: '<rect x="6" y="6" width="12" height="12" rx="2"/>'
+      };
+      const svgIcon = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[k]}</svg>`;
+      // Channel tints for the icon tiles
+      const TINT = {
+        audience: ['#E8EEF8', '#0A3A8C'], voice: ['#E6F8FF', '#0093CC'], whatsapp: ['#E7F8EE', '#16A34A'],
+        sms: ['#EEF2FF', '#4F46E5'], rcs: ['#F3EEFF', '#7C3AED'], api: ['#FFF4E5', '#C2410C']
+      };
+
+      // Node layout in stage coordinates (header = 55px tall; each port row = 20px)
+      const WF_NODES = [
+        { id: 'start', pill: 'start', x: 14,   y: 256, label: 'Start', icon: 'play' },
+        { id: 'aud',   x: 122,  y: 245, w: 185, title: 'Audience', sub: 'audience_1 · 1 field', icon: 'users', tint: 'audience', headOut: true },
+        { id: 'ai',    x: 345,  y: 222, w: 215, title: 'AI Call', sub: 'voice_1 · AI voice outreach', icon: 'phone', tint: 'voice',
+          ports: [['success', 'Success'], ['failed', 'Failed']] },
+        { id: 'wa',    x: 605,  y: 80,  w: 230, title: 'WhatsApp', sub: 'whatsapp_1 · Send WhatsApp template', icon: 'chat', tint: 'whatsapp',
+          ports: [['reply', 'Text Reply Received'], ['timeout', 'Timeout'], ['failed', 'Failed']] },
+        { id: 'sms',   x: 605,  y: 310, w: 230, title: 'SMS', sub: 'sms_1 · Send SMS', icon: 'sms', tint: 'sms',
+          ports: [['delivered', 'Delivered'], ['failed', 'Failed'], ['timeout', 'Timeout']] },
+        { id: 'fu',    x: 880,  y: 36,  w: 235, title: 'Follow-up AI Call', sub: 'ffw_1 · Run a freeform workflow', icon: 'phone', tint: 'voice',
+          ports: [['success', 'Success'], ['timeout', 'Timeout'], ['failed', 'Failed']] },
+        { id: 'api',   x: 880,  y: 318, w: 235, title: 'API tool', sub: 'api_1 · Call an external API', icon: 'api', tint: 'api',
+          ports: [['success', 'Success'], ['timeout', 'Timeout'], ['failure', 'Failure']] },
+        { id: 'rcs',   x: 1160, y: 0,   w: 205, title: 'RCS', sub: 'rcs_1 · Send RCS template', icon: 'rcs', tint: 'rcs',
+          ports: [['failed', 'Failed'], ['timeout', 'Timeout']] },
+        { id: 'end',   pill: 'end', x: 1296, y: 262, label: 'End', icon: 'stop' }
+      ];
+      // Edges: [id, fromPort ("node" = its single output, "node.port" = a labelled port), toNode]
+      const WF_EDGES = [
+        ['e1', 'start', 'aud'], ['e2', 'aud', 'ai'],
+        ['e3', 'ai.success', 'wa'], ['e4', 'ai.failed', 'sms'],
+        ['e5', 'wa.reply', 'fu'], ['e6', 'wa.timeout', 'end'], ['e7', 'wa.failed', 'end'],
+        ['e8', 'fu.success', 'end'], ['e9', 'fu.timeout', 'rcs'], ['e10', 'fu.failed', 'rcs'],
+        ['e11', 'rcs.failed', 'end'], ['e12', 'rcs.timeout', 'end'],
+        ['e13', 'sms.delivered', 'api'], ['e14', 'sms.failed', 'api'], ['e15', 'sms.timeout', 'api'],
+        ['e16', 'api.success', 'end'], ['e17', 'api.timeout', 'end'], ['e18', 'api.failure', 'end']
+      ];
+
+      /* ---- Render nodes ---- */
+      const nodeEl = {};
+      WF_NODES.forEach((n, i) => {
+        const el = document.createElement('div');
+        el.style.left = n.x + 'px'; el.style.top = n.y + 'px';
+        el.style.transitionDelay = (i * 70) + 'ms';
+        if (n.pill) {
+          el.className = 'wf-node wf-pill wf-' + n.pill;
+          el.innerHTML = `${svgIcon(n.icon)}${n.label}<span class="wf-badge"></span>` +
+            (n.pill === 'start' ? `<span class="wf-dot" data-out="${n.id}"></span>` : `<span class="wf-dot wf-in" data-in="${n.id}" style="left:-4px;right:auto"></span>`);
+        } else {
+          const [bg, fg] = TINT[n.tint];
+          el.className = 'wf-node';
+          el.style.width = n.w + 'px';
+          el.innerHTML = `
+            <span class="wf-dot wf-in" data-in="${n.id}"></span>
+            ${n.headOut ? `<span class="wf-dot wf-out-head" data-out="${n.id}"></span>` : ''}
+            <span class="wf-badge"></span>
+            <div class="wf-head">
+              <span class="wf-tile" style="background:${bg};color:${fg}">${svgIcon(n.icon)}</span>
+              <div class="min-w-0"><div class="wf-title">${n.title}</div><div class="wf-sub" title="${n.sub}">${n.sub}</div></div>
+            </div>
+            ${n.ports ? `<div class="wf-ports">${n.ports.map(([pid, lbl]) =>
+              `<div class="wf-port" data-port-row="${n.id}.${pid}">${lbl}<span class="wf-dot" data-out="${n.id}.${pid}"></span></div>`).join('')}</div>` : ''}`;
+        }
+        stage.appendChild(el);
+        nodeEl[n.id] = el;
+      });
+
+      /* ---- Legend ---- */
+      document.getElementById('wf-legend').innerHTML = [
+        ['voice', 'phone', 'AI voice call'], ['whatsapp', 'chat', 'WhatsApp'], ['sms', 'sms', 'SMS'],
+        ['rcs', 'rcs', 'RCS'], ['api', 'api', 'API action'], ['audience', 'users', 'Audience']
+      ].map(([t, ic, l]) => `<li class="flex items-center gap-2.5"><span class="wf-tile" style="width:28px;height:28px;background:${TINT[t][0]};color:${TINT[t][1]}">${svgIcon(ic)}</span>${l}</li>`).join('');
+
+      /* ---- Port geometry: layout offsets (unaffected by the CSS scale transform) ---- */
+      function centerOf(dot) {
+        let x = dot.offsetWidth / 2, y = dot.offsetHeight / 2, el = dot;
+        while (el && el !== stage) {
+          x += el.offsetLeft; y += el.offsetTop; el = el.offsetParent;
+          if (el && el !== stage) { x += el.clientLeft; y += el.clientTop; }   // include parent borders
+        }
+        return { x, y };
+      }
+      const edges = {};
+      function buildEdges() {
+        edgeLayer.innerHTML = '';
+        WF_EDGES.forEach(([id, from, to]) => {
+          const a = centerOf(stage.querySelector(`[data-out="${from}"]`));
+          const b = centerOf(stage.querySelector(`[data-in="${to}"]`));
+          const dx = Math.max(50, Math.abs(b.x - a.x) * 0.45);
+          const p = document.createElementNS(SVGNS, 'path');
+          p.setAttribute('d', `M${a.x},${a.y} C${a.x + dx},${a.y} ${b.x - dx},${b.y} ${b.x},${b.y}`);
+          p.setAttribute('class', 'wf-edge');
+          edgeLayer.appendChild(p);
+          edges[id] = { el: p, len: p.getTotalLength(), from, to };
+        });
+      }
+
+      /* ---- Fit-to-width scaling ---- */
+      let scale = 1, holdFollowUntil = 0;
+      function fit() {
+        const avail = scroller.clientWidth - 16;
+        const s = scale = Math.max(Math.min(avail / STAGE_W, 1), avail >= 640 ? 0.55 : MIN_SCALE);  // tablets/desktops always fit
+        stage.style.transform = `scale(${s})`;
+        viewport.style.width = (STAGE_W * s) + 'px';
+        viewport.style.height = (STAGE_H * s) + 'px';
+        hint.classList.toggle('hidden', STAGE_W * s <= scroller.clientWidth);
+      }
+      window.addEventListener('resize', fit, { passive: true });
+      // Mobile: when the canvas is scrollable, auto-pan to follow the run —
+      // but back off for a while as soon as the user touches/scrolls it.
+      ['pointerdown', 'touchstart', 'wheel', 'keydown'].forEach(ev =>
+        scroller.addEventListener(ev, () => { holdFollowUntil = performance.now() + 8000; }, { passive: true }));
+      function follow(id) {
+        if (scroller.scrollWidth <= scroller.clientWidth + 2 || performance.now() < holdFollowUntil) return;
+        const el = nodeEl[id];
+        const cx = (el.offsetLeft + el.offsetWidth / 2) * scale;
+        scroller.scrollTo({ left: Math.max(0, cx - scroller.clientWidth / 2), behavior: reduceMotion ? 'auto' : 'smooth' });
+      }
+      fit(); buildEdges();
+      // Fonts can shift text metrics slightly — rebuild once they are ready.
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { buildEdges(); if (drawn) showEdges(true); });
+
+      let drawn = false;
+      function showEdges(instant) {
+        Object.values(edges).forEach((e, i) => {
+          const p = e.el;
+          if (instant) { p.style.strokeDasharray = ''; p.style.strokeDashoffset = ''; return; }
+          p.style.strokeDasharray = e.len; p.style.strokeDashoffset = e.len;
+          p.getBoundingClientRect(); // flush so the transition runs
+          p.classList.add('is-draw');
+          p.style.transitionDelay = (300 + i * 60) + 'ms';
+          p.style.strokeDashoffset = 0;
+          // Clear dash settings after drawing so hot strokes render solid
+          setTimeout(() => { p.classList.remove('is-draw'); p.style.transitionDelay = ''; p.style.strokeDasharray = ''; p.style.strokeDashoffset = ''; }, 1500 + i * 60);
+        });
+      }
+
+      /* ---- Run script: [delay ms before this step, action, ...args] ---- */
+      const PREFIX = [
+        [0, 'node', 'start'], [0, 'log', '00:00', 'Workflow triggered'], [200, 'edge', 'e1', 600],
+        [600, 'node', 'aud', '1 contact', 'info'], [0, 'log', '00:00', 'Audience loaded · 1 field'],
+        [500, 'edge', 'e2', 600],
+        [600, 'node', 'ai', 'Calling…', 'wave'], [0, 'log', '00:01', 'AI Call dialing']
+      ];
+      const SUCCESS = PREFIX.concat([
+        [900, 'log', '00:01', 'AI Call connected'],
+        [1400, 'log', '00:04', 'Intent: interested'], [0, 'badge', 'ai', 'Success', 'ok'],
+        [400, 'port', 'ai.success'], [0, 'edge', 'e3', 900],
+        [900, 'node', 'wa', 'Sent', 'info'], [0, 'log', '00:05', 'WhatsApp template sent'],
+        [1400, 'badge', 'wa', 'Reply received', 'ok'], [0, 'log', '00:09', 'Text reply received'],
+        [400, 'port', 'wa.reply'], [0, 'edge', 'e5', 700],
+        [700, 'node', 'fu', 'Calling…', 'wave'], [0, 'log', '00:10', 'Follow-up AI Call connected'],
+        [1600, 'badge', 'fu', 'Success', 'ok'], [0, 'log', '00:14', 'Follow-up call completed'],
+        [400, 'port', 'fu.success'], [0, 'edge', 'e8', 1000],
+        [1000, 'node', 'end', 'Done', 'ok'], [0, 'log', '00:15', 'Workflow complete ✓'],
+        [2600, 'noop']
+      ]);
+      const FALLBACK = PREFIX.concat([
+        [1000, 'log', '00:02', 'Ringing…'],
+        [1300, 'log', '00:04', 'No answer · fallback triggered'], [0, 'badge', 'ai', 'No answer', 'warn'],
+        [400, 'port', 'ai.failed'], [0, 'edge', 'e4', 800],
+        [800, 'node', 'sms', 'Sent', 'info'], [0, 'log', '00:05', 'SMS sent'],
+        [1300, 'badge', 'sms', 'Delivered', 'ok'], [0, 'log', '00:07', 'SMS delivered'],
+        [400, 'port', 'sms.delivered'], [0, 'edge', 'e13', 900],
+        [900, 'node', 'api', 'Calling API…', 'info'], [0, 'log', '00:08', 'External API called'],
+        [1300, 'badge', 'api', 'Success', 'ok'], [0, 'log', '00:09', 'API responded · record updated'],
+        [400, 'port', 'api.success'], [0, 'edge', 'e16', 1100],
+        [1100, 'node', 'end', 'Done', 'ok'], [0, 'log', '00:10', 'Workflow complete ✓'],
+        [2600, 'noop']
+      ]);
+      // Convert relative delays to absolute timestamps
+      const toTimeline = steps => { let t = 0; const ev = steps.map(s => { t += s[0]; return { t, a: s.slice(1) }; }); return { ev, len: t }; };
+      const RUNS = [{ name: 'Success path', tl: toTimeline(SUCCESS) }, { name: 'Fallback path', tl: toTimeline(FALLBACK) }];
+
+      const WAVE = '<span class="wf-wave" aria-hidden="true"><i></i><i></i><i></i><i></i></span>';
+      function setBadge(id, text, kind) {
+        const b = nodeEl[id].querySelector('.wf-badge');
+        if (!text) { b.classList.remove('show'); return; }
+        b.className = 'wf-badge show ' + (kind === 'wave' ? '' : (kind || ''));
+        b.innerHTML = (kind === 'wave' ? WAVE : '') + text;
+      }
+      let activeId = null;
+      function activate(id, text, kind) {
+        if (activeId) { nodeEl[activeId].classList.remove('is-active'); nodeEl[activeId].classList.add('is-done'); }
+        activeId = id;
+        nodeEl[id].classList.remove('is-done'); nodeEl[id].classList.add('is-active');
+        if (text) setBadge(id, text, kind);
+        follow(id);
+      }
+      function log(time, text) {
+        const li = document.createElement('li');
+        li.className = 'wf-log-item flex gap-3';
+        li.innerHTML = `<span class="shrink-0 text-sky-600">${time}</span><span>${text}</span>`;
+        logEl.appendChild(li);
+        while (logEl.children.length > 8) logEl.removeChild(logEl.firstChild);
+      }
+      function resetRun(run) {
+        Object.values(nodeEl).forEach(el => el.classList.remove('is-active', 'is-done'));
+        stage.querySelectorAll('.wf-badge').forEach(b => b.classList.remove('show'));
+        stage.querySelectorAll('.is-hot').forEach(el => el.classList.remove('is-hot'));
+        Object.values(edges).forEach(e => e.el.classList.remove('is-hot'));
+        dotLayer.innerHTML = ''; travels = []; activeId = null;
+        logEl.innerHTML = '';
+        pathChip.textContent = run.name;
+        pathChip.className = 'rounded-full px-3 py-1.5 text-xs font-semibold text-white shadow-soft ' + (run.name.startsWith('Success') ? 'bg-navy-900' : 'bg-amber-600');
+      }
+      let travels = [];
+      function fire(a) {
+        const [type, x, y, z] = a;
+        if (type === 'node') activate(x, y, z);
+        else if (type === 'badge') setBadge(x, y, z);
+        else if (type === 'log') log(x, y);
+        else if (type === 'port') { const r = stage.querySelector(`[data-port-row="${x}"]`); if (r) r.classList.add('is-hot'); }
+        else if (type === 'edge') {
+          const e = edges[x]; e.el.classList.add('is-hot'); follow(e.to);
+          stage.querySelector(`[data-out="${e.from}"]`).classList.add('is-hot');
+          if (!reduceMotion) {
+            const g = document.createElementNS(SVGNS, 'g');
+            g.innerHTML = '<circle r="11" fill="#00B7FF" opacity=".18"/><circle r="5" fill="#00B7FF"/><circle r="2" fill="#fff"/>';
+            dotLayer.appendChild(g);
+            travels.push({ e, g, t0: clock, dur: y });
+          }
+        }
+      }
+
+      /* ---- rAF loop: advances a virtual clock only while the canvas is on screen ---- */
+      let clock = 0, last = null, idx = 0, runNo = 0, raf = 0, visible = false;
+      const ease = p => p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      function frame(now) {
+        if (!visible) { raf = 0; last = null; return; }
+        if (last !== null) clock += Math.min(now - last, 100);
+        last = now;
+        const run = RUNS[runNo % 2];
+        while (idx < run.tl.ev.length && run.tl.ev[idx].t <= clock) fire(run.tl.ev[idx++].a);
+        travels = travels.filter(tr => {
+          const p = Math.min(Math.max((clock - tr.t0) / tr.dur, 0), 1);
+          const pt = tr.e.el.getPointAtLength(tr.e.len * ease(p));
+          tr.g.setAttribute('transform', `translate(${pt.x} ${pt.y})`);
+          if (p >= 1) { tr.g.remove(); return false; }
+          return true;
+        });
+        if (clock >= run.tl.len) { runNo++; clock = 0; idx = 0; resetRun(RUNS[runNo % 2]); }
+        raf = requestAnimationFrame(frame);
+      }
+
+      function start() {
+        if (reduceMotion) {
+          // Static, fully-drawn diagram showing the success path and its log.
+          showEdges(true);
+          resetRun(RUNS[0]);
+          RUNS[0].tl.ev.forEach(ev => fire(ev.a));
+          return;
+        }
+        showEdges(false);
+        resetRun(RUNS[0]);
+        clock = -1800;               // let the edges finish drawing before the first run
+      }
+
+      const wfRoot = document.getElementById('wf');
+      wfRoot.classList.add(reduceMotion ? 'wf-on' : 'wf-pending');
+      if (!('IntersectionObserver' in window)) { wfRoot.classList.add('wf-on'); drawn = true; start(); visible = true; raf = requestAnimationFrame(frame); return; }
+      new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          visible = en.isIntersecting;
+          if (visible && !drawn) { drawn = true; wfRoot.classList.add('wf-on'); start(); }
+          if (visible && !reduceMotion && !raf) raf = requestAnimationFrame(frame);
+        });
+      }, { threshold: 0.25 }).observe(wfRoot);
+    })();
 
     /* ---------- Reveal on scroll ---------- */
     const reveals = document.querySelectorAll('.reveal');
